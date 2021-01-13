@@ -1,36 +1,32 @@
 package host;
 
 import org.apache.zookeeper.*;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.autoconfigure.jdbc.DataSourceAutoConfiguration;
+import org.springframework.context.annotation.Bean;
+import org.springframework.stereotype.Component;
 
 import java.awt.geom.Point2D;
+import java.util.Collections;
 
 @SpringBootApplication(exclude={DataSourceAutoConfiguration.class})
-public class Server /*implements Watcher, Runnable*/ {
+public class Server implements Watcher, Runnable {
     int myid;
     static ZooKeeper zk;
     Point2D location;
 
-    public static void main(String[] args) throws java.io.IOException, InterruptedException, KeeperException {
-        SpringApplication.run(Server.class, args);
-        //host.Server haifa = new host.Server(2181, 3, 5);
-        //host.Server saratov = new host.Server(2182, 6, 2);
-        //host.Server afula = new host.Server(2183, 1, 10);
-        //Thread haifa_thread = new Thread(haifa);
-        //Thread saratov_thread = new Thread(saratov);
-        //Thread afula_thread = new Thread(afula);
-        //haifa_thread.start();
-        //saratov_thread.start();
-        //afula_thread.start();
+    public Server(){}
 
-        //System.out.println("Bye");
-    }
-/*
-    public Server(int port, double x, double y) throws java.io.IOException{
-        zk = new ZooKeeper("127.0.0.1:" + port, 3000, this);
-        location = new Point2D.Double(x, y);
+    public Server(int port) throws java.io.IOException{
+        String[] args = new String[0];
+        SpringApplication app = new SpringApplication(Server.class);
+        app.setDefaultProperties(Collections
+                .singletonMap("server.port", String.valueOf(port)));
+        app.run(args);
+        //zk = new ZooKeeper("127.0.0.1:" + (port-1000), 3000, this);
+
     }
 
 
@@ -57,6 +53,6 @@ public class Server /*implements Watcher, Runnable*/ {
             e.printStackTrace();
         }
     }
-*/
+
 
 }

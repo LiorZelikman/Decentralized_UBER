@@ -3,40 +3,40 @@ package entities;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import java.awt.geom.Point2D;
-import java.util.Date;
+import java.time.LocalDate;
 import java.util.Objects;
 
 @Entity
 public class Ride {
     @Id
-    private Long ride_id;
+    private Integer ride_id;
 
     private String first_name;
     private String last_name;
     private Integer phone_number;
     private Point2D.Double starting_pos;
     private Point2D.Double ending_pos;
-    private Date departure_date;
+    private LocalDate departure_Date;
     private Integer vacancies;
 
     protected Ride(){}
 
-    public Ride(Long ride_id, String first_name, String last_name, Integer phone_number, Point2D.Double starting_pos, Point2D.Double ending_pos, Date departure_date, Integer vacancies) {
+    public Ride(Integer ride_id, String first_name, String last_name, Integer phone_number, Point2D.Double starting_pos, Point2D.Double ending_pos, LocalDate departure_Date, Integer vacancies) {
         this.ride_id = ride_id;
         this.first_name = first_name;
         this.last_name = last_name;
         this.phone_number = phone_number;
         this.starting_pos = starting_pos;
         this.ending_pos = ending_pos;
-        this.departure_date = departure_date;
+        this.departure_Date = departure_Date;
         this.vacancies = vacancies;
     }
 
-    public Long getRide_id() {
+    public Integer getRide_id() {
         return ride_id;
     }
 
-    public void setRide_id(Long ride_id) {
+    public void setRide_id(Integer ride_id) {
         this.ride_id = ride_id;
     }
 
@@ -80,12 +80,12 @@ public class Ride {
         this.ending_pos = ending_pos;
     }
 
-    public Date getDeparture_date() {
-        return departure_date;
+    public LocalDate getdeparture_Date() {
+        return departure_Date;
     }
 
-    public void setDeparture_date(Date departure_date) {
-        this.departure_date = departure_date;
+    public void setdeparture_Date(LocalDate departure_Date) {
+        this.departure_Date = departure_Date;
     }
 
     public Integer getVacancies() {
@@ -108,19 +108,19 @@ public class Ride {
         return Objects.equals(this.ride_id, ride.ride_id) && Objects.equals(this.first_name, ride.first_name)
                 && Objects.equals(this.last_name, ride.last_name) && Objects.equals(this.phone_number, ride.phone_number)
                 && Objects.equals(this.starting_pos, ride.starting_pos) && Objects.equals(this.ending_pos, ride.ending_pos)
-                && Objects.equals(this.departure_date, ride.departure_date) && Objects.equals(this.vacancies, ride.vacancies);
+                && Objects.equals(this.departure_Date, ride.departure_Date) && Objects.equals(this.vacancies, ride.vacancies);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(this.ride_id, this.first_name, this.last_name, this.phone_number, this.starting_pos, this.ending_pos, this.departure_date, this.vacancies);
+        return Objects.hash(this.ride_id, this.first_name, this.last_name, this.phone_number, this.starting_pos, this.ending_pos, this.departure_Date, this.vacancies);
     }
 
     @Override
     public String toString() {
         return "entities.Ride{" + "id=" + this.ride_id + ", first name='" + this.first_name + '\'' + ", last name='" + this.last_name + '\''
                 + ", phone number='" + this.phone_number + '\'' + ", starting position='" + this.starting_pos.toString() + '\''
-                + ", ending position='" + this.ending_pos + '\'' + ", departure date='" + this.departure_date + '\''
+                + ", ending position='" + this.ending_pos + '\'' + ", departure LocalDate='" + this.departure_Date + '\''
                 + ", vacancies='" + this.vacancies + '\'' + '}';
     }
 }
