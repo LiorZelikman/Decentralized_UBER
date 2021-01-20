@@ -49,7 +49,10 @@ message RideRequest {
 }
 
 message RideOffer {
-  int32 id = 1;
+  string firstName = 1;
+  string lastName = 2;
+  string phone = 3;
+  int32 id = 4;
 }
 
 

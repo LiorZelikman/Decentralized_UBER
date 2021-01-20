@@ -1,11 +1,3 @@
-java/generated/RideOffer.java
- generated.RideOffer
- generated.RideOffer$1
- generated.RideOffer$Builder
-java/generated/RideOfferOrBuilder.java
- generated.RideOfferOrBuilder
-entities/Ride.java
- entities.Ride
 grpc/generated/ServerCommunicationGrpc.java
  generated.ServerCommunicationGrpc
  generated.ServerCommunicationGrpc$1
@@ -19,6 +11,18 @@ grpc/generated/ServerCommunicationGrpc.java
  generated.ServerCommunicationGrpc$ServerCommunicationImplBase
  generated.ServerCommunicationGrpc$ServerCommunicationMethodDescriptorSupplier
  generated.ServerCommunicationGrpc$ServerCommunicationStub
+java/generated/RideOfferOrBuilder.java
+ generated.RideOfferOrBuilder
+entities/RideRequestEntity.java
+ entities.RideRequestEntity
+java/generated/RideRequest.java
+ generated.RideRequest
+ generated.RideRequest$1
+ generated.RideRequest$Builder
+host/Server.java
+ host.Server
+host/Main.java
+ host.Main
 java/generated/PointOrBuilder.java
  generated.PointOrBuilder
 utils/Utils.java
@@ -31,17 +35,22 @@ java/generated/Point.java
  generated.Point
  generated.Point$1
  generated.Point$Builder
-gRPCServices/ServerCommunicationService.java
- gRPCServices.ServerCommunicationService
-java/generated/RideRequest.java
- generated.RideRequest
- generated.RideRequest$1
- generated.RideRequest$Builder
-host/Server.java
- host.Server
-host/Main.java
- host.Main
+java/generated/RideOffer.java
+ generated.RideOffer
+ generated.RideOffer$1
+ generated.RideOffer$Builder
 host/controllers/RideController.java
  host.controllers.RideController
+entities/Ride.java
+ entities.Ride
+entities/RideOfferEntity.java
+ entities.RideOfferEntity
+gRPCServices/GRPCServer.java
+ gRPCServices.GRPCServer
+ gRPCServices.GRPCServer$1
+gRPCServices/GRPCService.java
+ gRPCServices.GRPCService
+gRPCServices/GRPCClient.java
+ gRPCServices.GRPCClient
 services/RidesService.java
  services.RidesService

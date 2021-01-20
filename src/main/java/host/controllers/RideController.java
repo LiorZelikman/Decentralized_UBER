@@ -2,6 +2,8 @@ package host.controllers;
 
 
 import entities.Ride;
+import entities.RideOfferEntity;
+import entities.RideRequestEntity;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.web.servlet.context.ServletWebServerInitializedEvent;
 import org.springframework.context.ApplicationListener;
@@ -11,7 +13,9 @@ import services.RidesService;
 
 import javax.persistence.criteria.CriteriaBuilder;
 import java.awt.geom.Point2D;
+import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Map;
 
 @RestController
@@ -29,17 +33,30 @@ public class RideController implements ApplicationListener<ServletWebServerIniti
     @Override
     public void onApplicationEvent(ServletWebServerInitializedEvent event) {
         myPort = event.getWebServer().getPort();
-        service.updatePort(myPort);
+        try {
+            service.updatePort(myPort);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    @PostMapping(path  = "/rideRequest")
+    RideOfferEntity requestRide(@RequestBody RideRequestEntity req){
+        return service.requestRide(req);
     }
 
     @GetMapping(path = "/rides")
-    ArrayList<Ride> getAllRides(){
+    Collection<Ride> getAllRides(){
         return service.getAllRides();
     }
 
+    @GetMapping(path = "/test")
+    String test(){
+        return service.test();
+    }
 
-    @PostMapping(path = "/rides")
-    Ride newRide(@RequestBody Ride newRide){
+    @PostMapping(path = "/rides/")
+    Ride newRides(@RequestBody Ride newRide){
         return service.save(newRide);
     }
 

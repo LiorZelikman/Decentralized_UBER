@@ -42,14 +42,15 @@ public final class RouteGuideProto {
       "oint\022\t\n\001x\030\001 \001(\001\022\t\n\001y\030\002 \001(\001\"w\n\013RideReques" +
       "t\022,\n\010srcPoint\030\001 \001(\0132\032.servercommunicatio" +
       "n.Point\022,\n\010dstPoint\030\002 \001(\0132\032.servercommun" +
-      "ication.Point\022\014\n\004date\030\003 \001(\t\"\027\n\tRideOffer" +
-      "\022\n\n\002id\030\001 \001(\0052\276\001\n\023ServerCommunication\022W\n\021" +
-      "hasCompatibleRide\022 .servercommunication." +
-      "RideRequest\032\036.servercommunication.RideOf" +
-      "fer\"\000\022N\n\noccupyRide\022\036.servercommunicatio" +
-      "n.RideOffer\032\036.servercommunication.RideOf" +
-      "fer\"\000B$\n\tgeneratedB\017RouteGuideProtoP\001\242\002\003" +
-      "RTGb\006proto3"
+      "ication.Point\022\014\n\004date\030\003 \001(\t\"K\n\tRideOffer" +
+      "\022\021\n\tfirstName\030\001 \001(\t\022\020\n\010lastName\030\002 \001(\t\022\r\n" +
+      "\005phone\030\003 \001(\t\022\n\n\002id\030\004 \001(\0052\276\001\n\023ServerCommu" +
+      "nication\022W\n\021hasCompatibleRide\022 .serverco" +
+      "mmunication.RideRequest\032\036.servercommunic" +
+      "ation.RideOffer\"\000\022N\n\noccupyRide\022\036.server" +
+      "communication.RideOffer\032\036.servercommunic" +
+      "ation.RideOffer\"\000B$\n\tgeneratedB\017RouteGui" +
+      "deProtoP\001\242\002\003RTGb\006proto3"
     };
     descriptor = com.google.protobuf.Descriptors.FileDescriptor
       .internalBuildGeneratedFileFrom(descriptorData,
@@ -72,7 +73,7 @@ public final class RouteGuideProto {
     internal_static_servercommunication_RideOffer_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_servercommunication_RideOffer_descriptor,
-        new java.lang.String[] { "Id", });
+        new java.lang.String[] { "FirstName", "LastName", "Phone", "Id", });
   }
 
   // @@protoc_insertion_point(outer_class_scope)

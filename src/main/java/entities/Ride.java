@@ -1,5 +1,9 @@
 package entities;
 
+import generated.Point;
+import generated.RideOffer;
+import generated.RideRequest;
+
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import java.awt.geom.Point2D;
@@ -13,15 +17,28 @@ public class Ride {
 
     private String first_name;
     private String last_name;
-    private Integer phone_number;
+    private String phone_number;
     private Point2D.Double starting_pos;
     private Point2D.Double ending_pos;
     private LocalDate departure_Date;
     private Integer vacancies;
+    private Double PD;
 
     protected Ride(){}
 
-    public Ride(Integer ride_id, String first_name, String last_name, Integer phone_number, Point2D.Double starting_pos, Point2D.Double ending_pos, LocalDate departure_Date, Integer vacancies) {
+    public Ride(Ride ride){
+        this.ride_id = ride.ride_id;
+        this.first_name = ride.first_name;
+        this.last_name = ride.last_name;
+        this.phone_number = ride.phone_number;
+        this.starting_pos = ride.starting_pos;
+        this.ending_pos = ride.ending_pos;
+        this.departure_Date = ride.departure_Date;
+        this.vacancies = ride.vacancies;
+        this.PD = ride.PD;
+    }
+
+    public Ride(Integer ride_id, String first_name, String last_name, String phone_number, Point2D.Double starting_pos, Point2D.Double ending_pos, LocalDate departure_Date, Integer vacancies, Double PD) {
         this.ride_id = ride_id;
         this.first_name = first_name;
         this.last_name = last_name;
@@ -30,6 +47,7 @@ public class Ride {
         this.ending_pos = ending_pos;
         this.departure_Date = departure_Date;
         this.vacancies = vacancies;
+        this.PD = PD;
     }
 
     public Integer getRide_id() {
@@ -56,11 +74,11 @@ public class Ride {
         this.last_name = last_name;
     }
 
-    public Integer getPhone_number() {
+    public String getPhone_number() {
         return phone_number;
     }
 
-    public void setPhone_number(Integer phone_number) {
+    public void setPhone_number(String phone_number) {
         this.phone_number = phone_number;
     }
 
@@ -80,20 +98,62 @@ public class Ride {
         this.ending_pos = ending_pos;
     }
 
-    public LocalDate getdeparture_Date() {
-        return departure_Date;
-    }
-
-    public void setdeparture_Date(LocalDate departure_Date) {
-        this.departure_Date = departure_Date;
-    }
-
     public Integer getVacancies() {
         return vacancies;
     }
 
     public void setVacancies(Integer vacancies) {
         this.vacancies = vacancies;
+    }
+
+    public LocalDate getDeparture_Date() {
+        return departure_Date;
+    }
+
+    public void setDeparture_Date(LocalDate departure_Date) {
+        this.departure_Date = departure_Date;
+    }
+
+    public Double getPD() {
+        return PD;
+    }
+
+    public void setPD(Double PD) {
+        this.PD = PD;
+    }
+
+    public boolean doesRideMatch(RideRequest rr){
+        if(!rr.getDate().equals(this.getDeparture_Date().toString())){
+            return false;
+        }
+        return this.isInPD(rr.getSrcPoint()) && this.isInPD(rr.getDstPoint());
+    }
+
+    private boolean isInPD(Point extraPoint){
+        return (this.distance(extraPoint) <= this.getPD());
+    }
+
+    private Double distance(Point extraPoint){
+
+        Point2D.Double extraPoint2D = new Point2D.Double(extraPoint.getX(), extraPoint.getY());
+        if ((extraPoint2D.x < this.getStarting_pos().x && extraPoint2D.x < this.getEnding_pos().x) ||
+                (extraPoint2D.x > this.getStarting_pos().x && extraPoint2D.x > this.getEnding_pos().x) ||
+                (extraPoint2D.y < this.getStarting_pos().y && extraPoint2D.y < this.getEnding_pos().y) ||
+                (extraPoint2D.y > this.getStarting_pos().y && extraPoint2D.y > this.getEnding_pos().y)) {
+            return Math.min(extraPoint2D.distance(this.getStarting_pos()), extraPoint2D.distance(this.getEnding_pos()));
+        } else {
+            double orgXDist = this.getEnding_pos().x - this.getStarting_pos().x;
+            double orgYDist = this.getEnding_pos().y - this.getStarting_pos().y;
+            double extraSrcYDist = this.getStarting_pos().y - extraPoint2D.y;
+            double extraSrcXDist = this.getStarting_pos().x - extraPoint2D.x;
+            return ( Math.abs(( (orgXDist)*(extraSrcYDist) ) - ( (extraSrcXDist)*(orgYDist) ) ) /
+                    ( Math.sqrt( Math.pow(orgXDist, 2) + Math.pow(orgYDist, 2)) ) );
+        }
+    }
+
+    public RideOffer toRideOffer(){
+        return RideOffer.newBuilder().setFirstName(this.getFirst_name())
+                .setLastName(this.getLast_name()).setPhone(this.getPhone_number()).setId(this.getRide_id()).build();
     }
 
 
@@ -108,7 +168,8 @@ public class Ride {
         return Objects.equals(this.ride_id, ride.ride_id) && Objects.equals(this.first_name, ride.first_name)
                 && Objects.equals(this.last_name, ride.last_name) && Objects.equals(this.phone_number, ride.phone_number)
                 && Objects.equals(this.starting_pos, ride.starting_pos) && Objects.equals(this.ending_pos, ride.ending_pos)
-                && Objects.equals(this.departure_Date, ride.departure_Date) && Objects.equals(this.vacancies, ride.vacancies);
+                && Objects.equals(this.departure_Date.toString(), ride.departure_Date.toString()) && Objects.equals(this.vacancies, ride.vacancies)
+                && Objects.equals(this.PD, ride.PD);
     }
 
     @Override
