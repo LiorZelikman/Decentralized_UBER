@@ -48,6 +48,7 @@ public class RidesService{
 
     private static final Map<Point2D.Double, ArrayList<Integer>> city_to_grpc_port;
 
+    public static final Integer servers_per_city = 3;
     //private static final Map<Point2D.Double, ArrayList<ServerCommunicationGrpc.ServerCommunicationBlockingStub>> blockingStubs;
 
     //private static final ServerCommunicationGrpc.ServerCommunicationStub hastub;
@@ -81,12 +82,34 @@ public class RidesService{
         }*/
     }
 
-
-
     public RidesService(){
         grpcClient = new GRPCClient();
         rides = new ConcurrentHashMap<>();
         id = 1;
+
+        rides.put(0, new Ride(0, "Jhony", "Walker", "0550770077",
+                new Point2D.Double(0.0, 0.0), new Point2D.Double(2.0, 2.0),
+                LocalDate.now(), 2, 2.0));
+    }
+
+    public void setPort(Integer port) throws IOException {
+        //Setting my city based on my port
+        myHttpPort = port;
+        myGrpcPort = port + 1000;
+        for (Map.Entry<Point2D.Double, ArrayList<Integer>> city: city_to_http_port.entrySet()) {
+            ArrayList<Integer> city_ports = city.getValue();
+            if(city_ports.contains(myHttpPort)){
+                myCity = city.getKey();
+                System.out.println(myCity);
+                break;
+            }
+        }
+
+        //Starting the gRPC server that corresponds to this port
+        grpcServer = new GRPCServer(myGrpcPort, rides);
+        grpcServer.start();
+
+        //starting the zookeeper client that corresponds to this port
         try{
             this.zooKeeper = new ZKConnection(myHttpPort, rides);
         }
@@ -94,9 +117,13 @@ public class RidesService{
             System.out.println(e.getMessage());
         }
 
-        addToRides(new Ride(0, "Jhony", "Walker", "0550770077",
-                new Point2D.Double(0.0, 0.0), new Point2D.Double(2.0, 2.0),
-                LocalDate.now(), 2, 2.0));
+        if(port%10 == 2){
+            try {
+                Thread.sleep(9999999*1000);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        }
     }
 
     public static RideOffer assignRide(ConcurrentMap<Integer, Ride> rides, Integer rideID){
@@ -165,33 +192,6 @@ public class RidesService{
 //                RideOffer res = grpcClient.hasCompatibleRide(testChannel, new Point2D.Double(1.0,1.2), new Point2D.Double(1.0,100.0), LocalDate.now());
 //        return (res.getFirstName() + "\n" + res.getLastName() + "\n" + res.getPhone());
         return "Test is currently unavailable";
-    }
-
-    public void setPort(Integer port) throws IOException {
-        //Setting my city based on my port
-        myHttpPort = port;
-        myGrpcPort = port + 1000;
-        for (Map.Entry<Point2D.Double, ArrayList<Integer>> city: city_to_http_port.entrySet()) {
-            ArrayList<Integer> city_ports = city.getValue();
-            if(city_ports.contains(myHttpPort)){
-                myCity = city.getKey();
-                System.out.println(myCity);
-                break;
-            }
-        }
-
-        //Starting the gRPC server that corresponds to this port
-        grpcServer = new GRPCServer(myGrpcPort, rides);
-        grpcServer.start();
-
-        //starting the zookeeper client that corresponds to this port
-//        zkClient = new ZooKeeper("127.0.0.1:" + (port-1000), 3000, zkWatcher);
-//        try {
-//            zkClient.addWatch("/add_operation_" + port/10000, zkWatcher, AddWatchMode.PERSISTENT);
-//            zkClient.addWatch("/assign_operation_" + port/10000, zkWatcher, AddWatchMode.PERSISTENT);
-//        } catch (KeeperException | InterruptedException e) {
-//            e.printStackTrace();
-//        }
     }
 
     public Collection<Ride> getAllRides(){

@@ -182,6 +182,13 @@ public class Ride {
         return "entities.Ride{" + "id=" + this.ride_id + ", first name='" + this.first_name + '\'' + ", last name='" + this.last_name + '\''
                 + ", phone number='" + this.phone_number + '\'' + ", starting position='" + this.starting_pos.toString() + '\''
                 + ", ending position='" + this.ending_pos + '\'' + ", departure LocalDate='" + this.departure_Date + '\''
-                + ", vacancies='" + this.vacancies + '\'' + '}';
+                + ", vacancies='" + this.vacancies + '\'' +  ", PD='" + this.PD + '}';
+    }
+
+    public String toCustomString(){
+        return "" + this.ride_id + ";" + this.first_name + ";" + this.last_name + ";" + this.phone_number + ";"
+                + this.starting_pos.x + ";" + + this.starting_pos.y + ";" + this.ending_pos.x + ";" + this.starting_pos.y + ";"
+                + this.departure_Date + ";" + this.vacancies + ";" +  + this.PD + ";";
+
     }
 }

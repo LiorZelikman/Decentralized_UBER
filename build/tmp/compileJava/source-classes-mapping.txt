@@ -19,10 +19,11 @@ java/generated/RideRequest.java
  generated.RideRequest
  generated.RideRequest$1
  generated.RideRequest$Builder
-host/Server.java
- host.Server
-host/Main.java
- host.Main
+entities/RideOfferEntity.java
+ entities.RideOfferEntity
+gRPCServices/GRPCServer.java
+ gRPCServices.GRPCServer
+ gRPCServices.GRPCServer$1
 java/generated/PointOrBuilder.java
  generated.PointOrBuilder
 utils/Utils.java
@@ -39,18 +40,23 @@ java/generated/RideOffer.java
  generated.RideOffer
  generated.RideOffer$1
  generated.RideOffer$Builder
-host/controllers/RideController.java
- host.controllers.RideController
-entities/Ride.java
- entities.Ride
-entities/RideOfferEntity.java
- entities.RideOfferEntity
-gRPCServices/GRPCServer.java
- gRPCServices.GRPCServer
- gRPCServices.GRPCServer$1
-gRPCServices/GRPCService.java
- gRPCServices.GRPCService
 gRPCServices/GRPCClient.java
  gRPCServices.GRPCClient
+host/Server.java
+ host.Server
+entities/PathRequest.java
+ entities.PathRequest
+host/Main.java
+ host.Main
+entities/Ride.java
+ entities.Ride
+gRPCServices/GRPCService.java
+ gRPCServices.GRPCService
+host/controllers/RideController.java
+ host.controllers.RideController
 services/RidesService.java
  services.RidesService
+zk/ZookeeperWatcher.java
+ zk.ZookeeperWatcher
+zk/ZKConnection.java
+ zk.ZKConnection

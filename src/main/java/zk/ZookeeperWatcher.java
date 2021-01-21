@@ -2,6 +2,7 @@ package zk;
 
 import entities.Ride;
 import org.apache.zookeeper.*;
+import services.RidesService;
 
 import java.awt.geom.Point2D;
 import java.nio.charset.StandardCharsets;
@@ -35,20 +36,23 @@ public class ZookeeperWatcher implements Watcher {
         String serverID = "" + port%10;
         if(path.equals("/" + cityID + "/add_operation")){
             try {
-                String data = getZNodeData(path);
+                String timestamp = getZNodeData(path);
+                String megaPathToDelete = "/" + cityID +"/added_" + timestamp;
+                String pathToDelete = megaPathToDelete + "/" + serverID;
+                String data = getZNodeData(megaPathToDelete);
                 String[] fields = data.split(";");
-                DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy/MM/d");
-                Ride newRide = new Ride(Integer.getInteger(fields[0]), fields[1], fields[2], fields[3],
+                Integer year = Integer.valueOf(fields[8].split("-")[0]);
+                Integer mon = Integer.valueOf(fields[8].split("-")[1]);
+                Integer day = Integer.valueOf(fields[8].split("-")[2]);
+                Ride newRide = new Ride(Integer.valueOf(fields[0]), fields[1], fields[2], fields[3],
                         new Point2D.Double(Double.valueOf(fields[4]), Double.valueOf(fields[5])),
                         new Point2D.Double(Double.valueOf(fields[6]), Double.valueOf(fields[7])),
-                        (LocalDate) formatter.parse(fields[8]), Integer.getInteger(fields[9]), Double.valueOf(fields[10]));
-                String triggeringServerID = fields[11];
+                        LocalDate.of(year, mon, day),
+                        Integer.valueOf(fields[9]), Double.valueOf(fields[10]));
                 rides.put(newRide.getRide_id(), newRide);
-                String megaPathToDelete = "/" + cityID +"/added_" + triggeringServerID;
-                String pathToDelete = megaPathToDelete + "/" + serverID;
                 zkClient.delete(pathToDelete, -1);
                 long start = System.currentTimeMillis();
-                long end = start + 5*1000;
+                long end = start + 30*1000;
                 while (System.currentTimeMillis() < end) {
                     try {
                         //checking if the path (i.e. all of its children) was deleted
@@ -59,10 +63,9 @@ public class ZookeeperWatcher implements Watcher {
                 }
 
                 //trying to delete the path (and all its children in any case
-                //3 is the number of servers per city
-                for (int i = 0; i < 3; i++) {
+                for (int i = 0; i < RidesService.servers_per_city; i++) {
                     try {
-                        zkClient.delete(megaPathToDelete + "/" + i, -1);
+                        zkClient.delete(megaPathToDelete + "/" + (i + 1), -1);
                     } catch(KeeperException | InterruptedException e) {}
                 }
                 try {
