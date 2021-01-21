@@ -17,6 +17,7 @@ import org.apache.zookeeper.AddWatchMode;
 import org.apache.zookeeper.KeeperException;
 import org.apache.zookeeper.ZooKeeper;
 import org.springframework.stereotype.Component;
+import zk.ZKConnection;
 import zk.ZookeeperWatcher;
 
 import java.awt.geom.Point2D;
@@ -35,8 +36,10 @@ public class RidesService{
     private Integer id;
 
     private Point2D.Double myCity;
-    private ZooKeeper zkClient;
-    private ZookeeperWatcher zkWatcher;
+//    private ZooKeeper zkClient;
+//    private ZookeeperWatcher zkWatcher;
+
+    private ZKConnection zooKeeper;
 
     private Integer myHttpPort;
     private Integer myGrpcPort;
@@ -84,8 +87,14 @@ public class RidesService{
         grpcClient = new GRPCClient();
         rides = new ConcurrentHashMap<>();
         id = 1;
+        try{
+            this.zooKeeper = new ZKConnection(myHttpPort, rides);
+        }
+        catch (Exception e){
+            System.out.println(e.getMessage());
+        }
 
-        addToRides(new Ride(1, "Jhony", "Walker", "0550770077",
+        addToRides(new Ride(0, "Jhony", "Walker", "0550770077",
                 new Point2D.Double(0.0, 0.0), new Point2D.Double(2.0, 2.0),
                 LocalDate.now(), 2, 2.0));
     }
@@ -112,7 +121,8 @@ public class RidesService{
     }
 
     public void addToRides(Ride newRide){
-        rides.put(newRide.getRide_id(), newRide);
+        zooKeeper.addRide(newRide);
+        //rides.put(newRide.getRide_id(), newRide);
     }
 
 
@@ -175,13 +185,13 @@ public class RidesService{
         grpcServer.start();
 
         //starting the zookeeper client that corresponds to this port
-        zkClient = new ZooKeeper("127.0.0.1:" + (port-1000), 3000, zkWatcher);
-        try {
-            zkClient.addWatch("/add_operation_" + port/10000, zkWatcher, AddWatchMode.PERSISTENT);
-            zkClient.addWatch("/assign_operation_" + port/10000, zkWatcher, AddWatchMode.PERSISTENT);
-        } catch (KeeperException | InterruptedException e) {
-            e.printStackTrace();
-        }
+//        zkClient = new ZooKeeper("127.0.0.1:" + (port-1000), 3000, zkWatcher);
+//        try {
+//            zkClient.addWatch("/add_operation_" + port/10000, zkWatcher, AddWatchMode.PERSISTENT);
+//            zkClient.addWatch("/assign_operation_" + port/10000, zkWatcher, AddWatchMode.PERSISTENT);
+//        } catch (KeeperException | InterruptedException e) {
+//            e.printStackTrace();
+//        }
     }
 
     public Collection<Ride> getAllRides(){
