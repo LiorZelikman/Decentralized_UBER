@@ -12,9 +12,8 @@ import java.awt.geom.Point2D;
 import java.util.Collections;
 
 @SpringBootApplication(exclude={DataSourceAutoConfiguration.class})
-public class Server implements Watcher, Runnable {
+public class Server implements Runnable {
     int myid;
-    static ZooKeeper zk;
     Point2D location;
 
     public Server(){}
@@ -25,7 +24,6 @@ public class Server implements Watcher, Runnable {
         app.setDefaultProperties(Collections
                 .singletonMap("server.port", String.valueOf(port)));
         app.run(args);
-        //zk = new ZooKeeper("127.0.0.1:" + (port-1000), 3000, this);
 
     }
 
@@ -41,18 +39,4 @@ public class Server implements Watcher, Runnable {
             }
         }
     }
-
-    @Override
-    public void process(WatchedEvent event) {
-        System.out.println("In process");
-        try {
-            zk.addWatch("/testik_100", this, AddWatchMode.PERSISTENT);
-        } catch (KeeperException e) {
-            e.printStackTrace();
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
-    }
-
-
 }

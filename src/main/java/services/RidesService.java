@@ -1,5 +1,6 @@
 package services;
 
+import entities.PathRequest;
 import entities.Ride;
 import entities.RideOfferEntity;
 import entities.RideRequestEntity;
@@ -12,7 +13,11 @@ import generated.ServerCommunicationGrpc;
 import io.grpc.Channel;
 import io.grpc.ManagedChannelBuilder;
 import io.grpc.stub.StreamObserver;
+import org.apache.zookeeper.AddWatchMode;
+import org.apache.zookeeper.KeeperException;
+import org.apache.zookeeper.ZooKeeper;
 import org.springframework.stereotype.Component;
+import zk.ZookeeperWatcher;
 
 import java.awt.geom.Point2D;
 import java.io.IOException;
@@ -30,6 +35,8 @@ public class RidesService{
     private Integer id;
 
     private Point2D.Double myCity;
+    private ZooKeeper zkClient;
+    private ZookeeperWatcher zkWatcher;
 
     private Integer myHttpPort;
     private Integer myGrpcPort;
@@ -96,6 +103,7 @@ public class RidesService{
             }
         } else {
             newRide.setVacancies(vacancies);
+
             if(!(rides.replace(rideID, ride, newRide))){
                 return null;
             }
@@ -126,6 +134,12 @@ public class RidesService{
         return new RideOfferEntity(grpcRideOffer);
     }
 
+
+    public List<RideOfferEntity> planPath(PathRequest pathRequest){
+        List<RideOfferEntity> offers = new ArrayList<>();
+        return offers;
+    }
+
     public String test(){
         /*RideRequest req = RideRequest.newBuilder().setSrcPoint(Point.newBuilder().setX(3.0).setY(5.7).build())
                 .setDstPoint(Point.newBuilder().setX(9.4).setX(-4.2).build())
@@ -143,7 +157,8 @@ public class RidesService{
         return "Test is currently unavailable";
     }
 
-    public void updatePort(Integer port) throws IOException {
+    public void setPort(Integer port) throws IOException {
+        //Setting my city based on my port
         myHttpPort = port;
         myGrpcPort = port + 1000;
         for (Map.Entry<Point2D.Double, ArrayList<Integer>> city: city_to_http_port.entrySet()) {
@@ -154,8 +169,19 @@ public class RidesService{
                 break;
             }
         }
+
+        //Starting the gRPC server that corresponds to this port
         grpcServer = new GRPCServer(myGrpcPort, rides);
         grpcServer.start();
+
+        //starting the zookeeper client that corresponds to this port
+        zkClient = new ZooKeeper("127.0.0.1:" + (port-1000), 3000, zkWatcher);
+        try {
+            zkClient.addWatch("/add_operation_" + port/10000, zkWatcher, AddWatchMode.PERSISTENT);
+            zkClient.addWatch("/assign_operation_" + port/10000, zkWatcher, AddWatchMode.PERSISTENT);
+        } catch (KeeperException | InterruptedException e) {
+            e.printStackTrace();
+        }
     }
 
     public Collection<Ride> getAllRides(){

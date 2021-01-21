@@ -1,6 +1,7 @@
 package host.controllers;
 
 
+import entities.PathRequest;
 import entities.Ride;
 import entities.RideOfferEntity;
 import entities.RideRequestEntity;
@@ -16,6 +17,7 @@ import java.awt.geom.Point2D;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 import java.util.Map;
 
 @RestController
@@ -34,7 +36,7 @@ public class RideController implements ApplicationListener<ServletWebServerIniti
     public void onApplicationEvent(ServletWebServerInitializedEvent event) {
         myPort = event.getWebServer().getPort();
         try {
-            service.updatePort(myPort);
+            service.setPort(myPort);
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -60,5 +62,7 @@ public class RideController implements ApplicationListener<ServletWebServerIniti
         return service.save(newRide);
     }
 
+    @PostMapping(path = "/path/")
+    List<RideOfferEntity> pathPlanning(@RequestBody PathRequest pathRequest){ return service.planPath(pathRequest); }
 
 }
