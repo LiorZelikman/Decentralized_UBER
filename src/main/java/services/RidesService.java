@@ -70,16 +70,6 @@ public class RidesService{
         );
 
         GRPCClient.city_to_grpc_port = city_to_grpc_port;
-
-        /*blockingStubs = new HashMap<>();
-        for (Map.Entry<Point2D.Double, ArrayList<Integer>> entry : city_to_port.entrySet()) {
-            ArrayList<ServerCommunicationGrpc.ServerCommunicationBlockingStub> currentStubs = new ArrayList<>();
-            for (Integer port : entry.getValue()) {
-                currentStubs.add(ServerCommunicationGrpc.newBlockingStub(ManagedChannelBuilder.
-                        forAddress("127.0.0.1", port).usePlaintext().build()));
-            }
-            blockingStubs.put(entry.getKey(), currentStubs);
-        }*/
     }
 
     public RidesService(){
@@ -115,14 +105,6 @@ public class RidesService{
         }
         catch (Exception e){
             System.out.println(e.getMessage());
-        }
-
-        if(port%10 == 2){
-            try {
-                Thread.sleep(9999999*1000);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
         }
     }
 

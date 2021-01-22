@@ -7,7 +7,6 @@ import services.RidesService;
 import java.awt.geom.Point2D;
 import java.nio.charset.StandardCharsets;
 import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
 import java.util.concurrent.ConcurrentHashMap;
 
 public class ZookeeperWatcher implements Watcher {
@@ -29,15 +28,41 @@ public class ZookeeperWatcher implements Watcher {
         return new String(b, StandardCharsets.UTF_8);
     }
 
+    public void clearNodes(String megaPathToDelete){
+        long start = System.currentTimeMillis();
+        long end = start + 30*1000;
+        while (System.currentTimeMillis() < end) {
+            try {
+                //checking if the path (i.e. all of its children) was deleted
+                if (zkClient.getAllChildrenNumber(megaPathToDelete) == 0) {
+                    break;
+                }
+            } catch (KeeperException | InterruptedException e) { }
+        }
+
+        //trying to delete the path (and all its children in any case
+        for (int i = 0; i < RidesService.servers_per_city; i++) {
+            try {
+                zkClient.delete(megaPathToDelete + "/" + (i + 1), -1);
+            } catch(KeeperException | InterruptedException e) {}
+        }
+        try {
+            zkClient.delete(megaPathToDelete, -1);
+            //unlock her and may god be with us
+        } catch(Exception e) {}
+    }
+
     @Override
     public void process(WatchedEvent event) {
         String path = event.getPath();
-        String cityID = "" + port/10000;
         String serverID = "" + port%10;
-        if(path.equals("/" + cityID + "/add_operation")){
+        if(path == null){
+            return;
+        }
+        if(path.equals("/add_operation")){
             try {
                 String timestamp = getZNodeData(path);
-                String megaPathToDelete = "/" + cityID +"/added_" + timestamp;
+                String megaPathToDelete = "/added_" + timestamp;
                 String pathToDelete = megaPathToDelete + "/" + serverID;
                 String data = getZNodeData(megaPathToDelete);
                 String[] fields = data.split(";");
@@ -51,37 +76,36 @@ public class ZookeeperWatcher implements Watcher {
                         Integer.valueOf(fields[9]), Double.valueOf(fields[10]));
                 rides.put(newRide.getRide_id(), newRide);
                 zkClient.delete(pathToDelete, -1);
-                long start = System.currentTimeMillis();
-                long end = start + 30*1000;
-                while (System.currentTimeMillis() < end) {
-                    try {
-                        //checking if the path (i.e. all of its children) was deleted
-                        if (zkClient.getAllChildrenNumber(megaPathToDelete) == 0) {
-                            break;
-                        }
-                    } catch (KeeperException | InterruptedException e) { }
-                }
-
-                //trying to delete the path (and all its children in any case
-                for (int i = 0; i < RidesService.servers_per_city; i++) {
-                    try {
-                        zkClient.delete(megaPathToDelete + "/" + (i + 1), -1);
-                    } catch(KeeperException | InterruptedException e) {}
-                }
-                try {
-                    zkClient.delete(megaPathToDelete, -1);
-                } catch(KeeperException | InterruptedException e) {}
+                clearNodes(megaPathToDelete);
 
             }
             catch (KeeperException | InterruptedException e) {
                 e.printStackTrace();
             }
 
+        } else if (path.equals("/assign_operation")){
+            try {
+                String timestamp = getZNodeData(path);
+                String megaPathToDelete = "/assigned_" + timestamp;
+                String pathToDelete = megaPathToDelete + "/" + serverID;
+                Integer rideID = Integer.valueOf(getZNodeData(megaPathToDelete));
+                Ride ride = rides.get(rideID);
+                if(ride != null) {
+                    Integer newVacancies = ride.getVacancies() - 1;
+                    if (newVacancies == 0) {
+                        rides.remove(rideID, ride);
+                    } else {
+                        Ride newRide = new Ride(ride);
+                        newRide.setVacancies(newVacancies);
+                        rides.replace(rideID, ride, newRide);
+                    }
+                }
+                zkClient.delete(pathToDelete, -1);
+                clearNodes(megaPathToDelete);
 
-
-
-        } else { //path.equals("/" + cityID + "/assign_operation")
-
+            } catch (KeeperException | InterruptedException e){}
+        } else {
+            System.out.println("How did you get here?");
         }
     }
 
