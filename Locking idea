@@ -1,0 +1,3 @@
+Lock before writing data (assigned_operation node and added_operation node) that will trigger the watcher.
+Unlock after SUCCESSFULY deleting the created (assigned_<timestamp> and added_<timestamp>) node
+שמע ישראל אדוני
