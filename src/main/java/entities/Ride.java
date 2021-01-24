@@ -151,6 +151,9 @@ public class Ride {
     }
 
     public boolean doesRideMatch(RideRequest rr){
+        if(this.vacancies <= 0){
+            return false;
+        }
         if(!rr.getDate().equals(this.getDeparture_Date().toString())){
             return false;
         }
@@ -181,7 +184,7 @@ public class Ride {
 
     public RideOffer toRideOffer(){
         return RideOffer.newBuilder().setFirstName(this.getFirst_name())
-                .setLastName(this.getLast_name()).setPhone(this.getPhone_number()).setId(this.getRide_id()).build();
+                .setLastName(this.getLast_name()).setPhone(this.getPhone_number()).setId(this.getRide_id()).setSatisfied(true).build();
     }
 
 
@@ -208,14 +211,14 @@ public class Ride {
     @Override
     public String toString() {
         return "entities.Ride{" + "id=" + this.ride_id + ", first name='" + this.first_name + '\'' + ", last name='" + this.last_name + '\''
-                + ", phone number='" + this.phone_number + '\'' + ", starting position='" + this.starting_pos.toString() + '\''
+                + ", phone number='" + this.phone_number + '\'' + ", starting position='" + this.starting_pos + '\''
                 + ", ending position='" + this.ending_pos + '\'' + ", departure LocalDate='" + this.departure_Date + '\''
                 + ", vacancies='" + this.vacancies + '\'' +  ", PD='" + this.PD + '}';
     }
 
     public String toCustomString(){
         return "" + this.ride_id + ";" + this.first_name + ";" + this.last_name + ";" + this.phone_number + ";"
-                + this.starting_pos.x + ";" + + this.starting_pos.y + ";" + this.ending_pos.x + ";" + this.starting_pos.y + ";"
+                + this.starting_pos.x + ";" + + this.starting_pos.y + ";" + this.ending_pos.x + ";" + this.ending_pos.y + ";"
                 + this.departure_Date + ";" + this.vacancies + ";" +  + this.PD + ";";
 
     }

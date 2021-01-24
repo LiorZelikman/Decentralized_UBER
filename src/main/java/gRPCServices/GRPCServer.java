@@ -1,12 +1,15 @@
 package gRPCServices;
 
 import entities.Ride;
+import entities.RideOfferEntity;
 import io.grpc.Server;
 import io.grpc.ServerBuilder;
+import zk.ZKConnection;
 
 import java.awt.geom.Point2D;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
 import java.util.concurrent.TimeUnit;
 import java.util.logging.Logger;
@@ -17,16 +20,16 @@ public class GRPCServer {
     private final int port;
     private final Server server;
 
-    public GRPCServer(int port, ConcurrentMap<Integer, Ride> rides) throws IOException {
-        this(ServerBuilder.forPort(port), port, rides);
+    public GRPCServer(int port, ConcurrentMap<Integer, Ride> rides, ConcurrentHashMap<Integer, RideOfferEntity> rideOffers, ZKConnection zookeeper) throws IOException {
+        this(ServerBuilder.forPort(port), port, rides, rideOffers, zookeeper);
     }
 
     /**
      * Create a RouteGuide server using serverBuilder as a base and features as data.
      */
-    public GRPCServer(ServerBuilder<?> serverBuilder, int port, ConcurrentMap<Integer, Ride> rides) {
+    public GRPCServer(ServerBuilder<?> serverBuilder, int port, ConcurrentMap<Integer, Ride> rides, ConcurrentHashMap<Integer, RideOfferEntity> rideOffers, ZKConnection zookeeper) {
         this.port = port;
-        server = serverBuilder.addService(new GRPCService(rides))
+        server = serverBuilder.addService(new GRPCService(rides, rideOffers, zookeeper))
                 .build();
     }
 

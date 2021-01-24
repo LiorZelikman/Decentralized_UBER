@@ -1,6 +1,7 @@
 package zk;
 
 import entities.Ride;
+import entities.RideOfferEntity;
 import org.apache.zookeeper.AddWatchMode;
 import org.apache.zookeeper.CreateMode;
 import org.apache.zookeeper.KeeperException;
@@ -24,17 +25,17 @@ public class ZKConnection {
     String serverID;
 
 
-    public ZKConnection(Integer port, ConcurrentHashMap<Integer, Ride> rides) throws IOException,
+    public ZKConnection(Integer port, ConcurrentHashMap<Integer, Ride> rides, ConcurrentHashMap<Integer, RideOfferEntity> rideOffers) throws IOException,
             InterruptedException, KeeperException {
         watcher = new ZookeeperWatcher();
         zkClient = new ZooKeeper("127.0.0.1:" + (port-1000), 60000, watcher);
-        watcher.setFields(zkClient, port, rides);
+        watcher.setFields(zkClient, port, rides, rideOffers);
         this.port = port;
         serverID = "" + port%10;
 
         createNode("/add_operation", "");
         createNode("/assign_operation", "");
-
+        createNode("/ID", "1");
         try {
             zkClient.addWatch("/add_operation", watcher, AddWatchMode.PERSISTENT);
             zkClient.addWatch("/assign_operation", watcher, AddWatchMode.PERSISTENT);
@@ -62,14 +63,14 @@ public class ZKConnection {
         }
     }
 
-    public void assign(Integer rideID){
+    public void assign(Integer rideID, Integer requestID){
         try{
             long timestamp = System.currentTimeMillis();
-            createNode("/added_" + timestamp, rideID.toString());
+            createNode("/assigned_" + timestamp, rideID + ";" + requestID);
             for(int i = 0; i < RidesService.servers_per_city; i++){
-                createNode("/added_" + timestamp + "/" + (i + 1), rideID.toString());
+                createNode("/assigned_" + timestamp + "/" + (i + 1), rideID + ";" + requestID);
             }
-            zkClient.setData("/add_operation", String.valueOf(timestamp).getBytes(), -1);
+            zkClient.setData("/assign_operation", String.valueOf(timestamp).getBytes(), -1);
         }
         catch (Exception e){
             System.out.println(e.getMessage());
@@ -81,5 +82,18 @@ public class ZKConnection {
         try {
             zkClient.create(path, data.getBytes(StandardCharsets.UTF_8), acls, CreateMode.CONTAINER);
         } catch (KeeperException | InterruptedException e){}
+    }
+
+    public int supplyID() throws KeeperException, InterruptedException {
+        while(true) {
+            Stat stat = new Stat();
+            int ID = Integer.parseInt(new String(zkClient.getData("/ID", false, stat), StandardCharsets.UTF_8));
+            int version = stat.getVersion();
+            try {
+                zkClient.setData("/ID", String.valueOf(ID + 1).getBytes(), version);
+                return ID;
+            } catch (KeeperException | InterruptedException e) {
+            }
+        }
     }
 }

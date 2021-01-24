@@ -22,18 +22,25 @@ public class RideOfferEntity extends RideRequestEntity {
     public RideOfferEntity() {
     }
 
-    public RideOfferEntity(String firstName, String lastName, String phone, int id, boolean satisfied, RideRequest req) {
+    public RideOfferEntity(String firstName, String lastName, String phone, boolean satisfied, RideRequest req) {
         super(req);
         this.firstName = firstName;
         this.lastName = lastName;
         this.phone = phone;
-        this.offerId = id;
         this.satisfied = satisfied;
     }
 
     public RideOfferEntity(RideOffer offer, RideRequest req){
-        this(offer.getFirstName(), offer.getLastName(), offer.getPhone(), offer.getId(), req);
+        this(offer.getFirstName(), offer.getLastName(), offer.getPhone(), offer.getSatisfied(), req);
     }
+
+    public RideOfferEntity(RideRequest req){
+        this("No ride found", "", "", false, req);
+    }
+
+    /*public boolean isDummy(RideOfferEntity offer){
+
+    }*/
 
     public Integer getOfferId() {
         return offerId;

@@ -1,6 +1,7 @@
 package zk;
 
 import entities.Ride;
+import entities.RideOfferEntity;
 import org.apache.zookeeper.*;
 import services.RidesService;
 
@@ -13,13 +14,15 @@ public class ZookeeperWatcher implements Watcher {
     ZooKeeper zkClient;
     Integer port;
     private ConcurrentHashMap<Integer, Ride> rides;
+    ConcurrentHashMap<Integer, RideOfferEntity> rideOffers;
 
     public ZookeeperWatcher(){ }
 
-    public void setFields(ZooKeeper zkClient, Integer port, ConcurrentHashMap<Integer, Ride> rides){
+    public void setFields(ZooKeeper zkClient, Integer port, ConcurrentHashMap<Integer, Ride> rides, ConcurrentHashMap<Integer, RideOfferEntity> rideOffers){
         this.zkClient = zkClient;
         this.port = port;
         this.rides = rides;
+        this.rideOffers = rideOffers;
     }
 
     public String getZNodeData(String path) throws KeeperException, InterruptedException {
@@ -66,15 +69,6 @@ public class ZookeeperWatcher implements Watcher {
                 String pathToDelete = megaPathToDelete + "/" + serverID;
                 String data = getZNodeData(megaPathToDelete);
                 Ride newRide = new Ride(data);
-//                String[] fields = data.split(";");
-//                Integer year = Integer.valueOf(fields[8].split("-")[0]);
-//                Integer mon = Integer.valueOf(fields[8].split("-")[1]);
-//                Integer day = Integer.valueOf(fields[8].split("-")[2]);
-//                Ride newRide = new Ride(Integer.valueOf(fields[0]), fields[1], fields[2], fields[3],
-//                        new Point2D.Double(Double.valueOf(fields[4]), Double.valueOf(fields[5])),
-//                        new Point2D.Double(Double.valueOf(fields[6]), Double.valueOf(fields[7])),
-//                        LocalDate.of(year, mon, day),
-//                        Integer.valueOf(fields[9]), Double.valueOf(fields[10]));
                 rides.put(newRide.getRide_id(), newRide);
                 zkClient.delete(pathToDelete, -1);
                 clearNodes(megaPathToDelete);
@@ -89,16 +83,18 @@ public class ZookeeperWatcher implements Watcher {
                 String timestamp = getZNodeData(path);
                 String megaPathToDelete = "/assigned_" + timestamp;
                 String pathToDelete = megaPathToDelete + "/" + serverID;
-                Integer rideID = Integer.valueOf(getZNodeData(megaPathToDelete));
+                String[] data = getZNodeData(megaPathToDelete).split(";");
+                Integer rideID = Integer.valueOf(data[0]);
+                Integer requestID = Integer.valueOf(data[1]);
                 Ride ride = rides.get(rideID);
                 if(ride != null) {
                     Integer newVacancies = ride.getVacancies() - 1;
-                    if (newVacancies == 0) {
-                        rides.remove(rideID, ride);
-                    } else {
+                    if(newVacancies > 0) {
                         Ride newRide = new Ride(ride);
                         newRide.setVacancies(newVacancies);
                         rides.replace(rideID, ride, newRide);
+                        RideOfferEntity newRideOffer = new RideOfferEntity(newRide.toRideOffer(), rideOffers.get(requestID).toRideRequest());
+                        rideOffers.replace(requestID, rideOffers.get(requestID), newRideOffer);
                     }
                 }
                 zkClient.delete(pathToDelete, -1);

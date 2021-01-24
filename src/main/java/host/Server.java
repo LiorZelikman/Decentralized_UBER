@@ -7,14 +7,37 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.autoconfigure.jdbc.DataSourceAutoConfiguration;
 import org.springframework.context.annotation.Bean;
 import org.springframework.stereotype.Component;
+import services.RidesService;
 
 import java.awt.geom.Point2D;
+import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashMap;
+import java.util.Map;
 
 @SpringBootApplication(exclude={DataSourceAutoConfiguration.class})
 public class Server implements Runnable {
-    int myid;
-    Point2D location;
+
+    public static ArrayList<Process> zkServers;
+
+    static{
+        zkServers = new ArrayList<>();
+        for (int i=0; i < RidesService.number_of_cities; i++) {
+            for(int j=1; j <= RidesService.servers_per_city; j++){
+                ProcessBuilder pb = new ProcessBuilder("ZookeeperServers\\ZookeeperServer_" + (i*RidesService.servers_per_city + j) + "\\bin\\zkServer.cmd");
+                try {
+                    Process pr = pb.start();
+                    zkServers.add(pr);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                    System.out.println("zkServer failed to start");
+                    System.exit(-1);
+                }
+            }
+        }
+    }
+
 
     public Server(){}
 

@@ -48,4 +48,10 @@ public interface RideOfferOrBuilder extends
    * @return The id.
    */
   int getId();
+
+  /**
+   * <code>bool satisfied = 5;</code>
+   * @return The satisfied.
+   */
+  boolean getSatisfied();
 }

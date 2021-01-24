@@ -5,6 +5,8 @@ import entities.PathRequest;
 import entities.Ride;
 import entities.RideOfferEntity;
 import entities.RideRequestEntity;
+import host.Server;
+import org.apache.zookeeper.KeeperException;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.web.servlet.context.ServletWebServerInitializedEvent;
 import org.springframework.context.ApplicationListener;
@@ -43,7 +45,7 @@ public class RideController implements ApplicationListener<ServletWebServerIniti
     }
 
     @PostMapping(path  = "/rideRequest")
-    RideOfferEntity requestRide(@RequestBody RideRequestEntity req){
+    RideOfferEntity requestRide(@RequestBody RideRequestEntity req) throws KeeperException, InterruptedException {
         return service.requestRide(req);
     }
 
@@ -58,11 +60,19 @@ public class RideController implements ApplicationListener<ServletWebServerIniti
     }
 
     @PostMapping(path = "/rides/")
-    Ride newRides(@RequestBody Ride newRide){
+    Ride newRides(@RequestBody Ride newRide) throws KeeperException, InterruptedException {
         return service.save(newRide);
     }
 
     @PostMapping(path = "/path/")
     List<RideOfferEntity> pathPlanning(@RequestBody PathRequest pathRequest){ return service.planPath(pathRequest); }
+
+    @DeleteMapping(path = "/zk")
+    boolean killZKServers(){
+        for (Process pr : Server.zkServers) {
+            pr.destroy();
+        }
+        return true;
+    }
 
 }

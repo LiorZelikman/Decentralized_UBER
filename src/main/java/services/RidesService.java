@@ -33,7 +33,7 @@ import java.util.concurrent.ConcurrentMap;
 public class RidesService{
 
     private final ConcurrentHashMap<Integer, Ride> rides;
-    private Integer id;
+    private final ConcurrentHashMap<Integer, RideOfferEntity> rideOffers;
 
     private Point2D.Double myCity;
 //    private ZooKeeper zkClient;
@@ -77,8 +77,7 @@ public class RidesService{
     public RidesService(){
         grpcClient = new GRPCClient();
         rides = new ConcurrentHashMap<>();
-        id = 1;
-
+        rideOffers = new ConcurrentHashMap<>();
         rides.put(0, new Ride(0, "Jhony", "Walker", "0550770077",
                 new Point2D.Double(0.0, 0.0), new Point2D.Double(2.0, 2.0),
                 LocalDate.now(), 2, 2.0));
@@ -97,19 +96,21 @@ public class RidesService{
             }
         }
 
-        //Starting the gRPC server that corresponds to this port
-        grpcServer = new GRPCServer(myGrpcPort, rides);
-        grpcServer.start();
-
         //starting the zookeeper client that corresponds to this port
         try{
-            this.zooKeeper = new ZKConnection(myHttpPort, rides);
+            this.zooKeeper = new ZKConnection(myHttpPort, rides, rideOffers);
         }
         catch (Exception e){
             System.out.println(e.getMessage());
         }
-    }
 
+        //Starting the gRPC server that corresponds to this port
+        grpcServer = new GRPCServer(myGrpcPort, rides, rideOffers, zooKeeper);
+        grpcServer.start();
+
+
+    }
+/*
     public static RideOffer assignRide(ConcurrentMap<Integer, Ride> rides, Integer rideID){
         Ride ride = rides.get(rideID);
         if(ride == null){
@@ -130,26 +131,31 @@ public class RidesService{
         }
         return newRide.toRideOffer();
     }
+*/
 
-    public void addToRides(Ride newRide){
+    public void addToRides(Ride newRide) {
         zooKeeper.addRide(newRide);
         //rides.put(newRide.getRide_id(), newRide);
     }
 
 
-    public RideOfferEntity requestRide(RideRequestEntity reqEntity){
+    public RideOfferEntity requestRide(RideRequestEntity reqEntity) throws KeeperException, InterruptedException {
+        reqEntity.setRequestId(zooKeeper.supplyID());
         RideRequest req = reqEntity.toRideRequest();
+        rideOffers.put(reqEntity.getRequestId(), new RideOfferEntity(req));
         for(Ride ride : rides.values()){
             if(ride.doesRideMatch(req)){
-                RideOffer offer = assignRide(rides, ride.getRide_id());
-                if(offer != null){
-                    return new RideOfferEntity(offer, req);
+                zooKeeper.assign(ride.getRide_id(), reqEntity.getRequestId());
+                RideOfferEntity offer = rideOffers.get(ride.getRide_id());
+                //RideOffer offer = assignRide(rides, ride.getRide_id());
+                if(offer.isSatisfied()){
+                    return offer;
                 }
             }
         }
         RideOffer grpcRideOffer = grpcClient.hasCompatibleRide(req);
         if(grpcRideOffer == null){
-            return new RideOfferEntity("Could not find ride", "", "", 8, req);
+            return new RideOfferEntity("Could not find ride", "", "", false, req);
         }
 
         return new RideOfferEntity(grpcRideOffer, req);
@@ -182,9 +188,9 @@ public class RidesService{
         return rides.values();
     }
 
-    public Ride save(Ride newRide) {
-        newRide.setRide_id(id);
-        id++;
+    public Ride save(Ride newRide) throws KeeperException, InterruptedException {
+        newRide.setRide_id(zooKeeper.supplyID());
+        newRide.setOrig_vacancies(newRide.getVacancies());
         addToRides(newRide);
         return newRide;
     }

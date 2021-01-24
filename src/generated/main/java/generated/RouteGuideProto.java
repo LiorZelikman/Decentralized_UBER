@@ -52,17 +52,18 @@ public final class RouteGuideProto {
       "oint\022\t\n\001x\030\001 \001(\001\022\t\n\001y\030\002 \001(\001\"w\n\013RideReques" +
       "t\022,\n\010srcPoint\030\001 \001(\0132\032.servercommunicatio" +
       "n.Point\022,\n\010dstPoint\030\002 \001(\0132\032.servercommun" +
-      "ication.Point\022\014\n\004date\030\003 \001(\t\"K\n\tRideOffer" +
+      "ication.Point\022\014\n\004date\030\003 \001(\t\"^\n\tRideOffer" +
       "\022\021\n\tfirstName\030\001 \001(\t\022\020\n\010lastName\030\002 \001(\t\022\r\n" +
-      "\005phone\030\003 \001(\t\022\n\n\002id\030\004 \001(\005\"#\n\014RideSnapshot" +
-      "\022\023\n\013description\030\001 \001(\t\"*\n\023RideRequestSnap" +
-      "shot\022\023\n\013description\030\001 \001(\t2\276\001\n\023ServerComm" +
-      "unication\022W\n\021hasCompatibleRide\022 .serverc" +
-      "ommunication.RideRequest\032\036.servercommuni" +
-      "cation.RideOffer\"\000\022N\n\noccupyRide\022\036.serve" +
-      "rcommunication.RideOffer\032\036.servercommuni" +
-      "cation.RideOffer\"\000B$\n\tgeneratedB\017RouteGu" +
-      "ideProtoP\001\242\002\003RTGb\006proto3"
+      "\005phone\030\003 \001(\t\022\n\n\002id\030\004 \001(\005\022\021\n\tsatisfied\030\005 " +
+      "\001(\010\"#\n\014RideSnapshot\022\023\n\013description\030\001 \001(\t" +
+      "\"*\n\023RideRequestSnapshot\022\023\n\013description\030\001" +
+      " \001(\t2\276\001\n\023ServerCommunication\022W\n\021hasCompa" +
+      "tibleRide\022 .servercommunication.RideRequ" +
+      "est\032\036.servercommunication.RideOffer\"\000\022N\n" +
+      "\noccupyRide\022\036.servercommunication.RideOf" +
+      "fer\032\036.servercommunication.RideOffer\"\000B$\n" +
+      "\tgeneratedB\017RouteGuideProtoP\001\242\002\003RTGb\006pro" +
+      "to3"
     };
     descriptor = com.google.protobuf.Descriptors.FileDescriptor
       .internalBuildGeneratedFileFrom(descriptorData,
@@ -85,7 +86,7 @@ public final class RouteGuideProto {
     internal_static_servercommunication_RideOffer_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_servercommunication_RideOffer_descriptor,
-        new java.lang.String[] { "FirstName", "LastName", "Phone", "Id", });
+        new java.lang.String[] { "FirstName", "LastName", "Phone", "Id", "Satisfied", });
     internal_static_servercommunication_RideSnapshot_descriptor =
       getDescriptor().getMessageTypes().get(3);
     internal_static_servercommunication_RideSnapshot_fieldAccessorTable = new

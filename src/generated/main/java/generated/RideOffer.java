@@ -74,6 +74,11 @@ private static final long serialVersionUID = 0L;
             id_ = input.readInt32();
             break;
           }
+          case 40: {
+
+            satisfied_ = input.readBool();
+            break;
+          }
           default: {
             if (!parseUnknownField(
                 input, unknownFields, extensionRegistry, tag)) {
@@ -231,6 +236,17 @@ private static final long serialVersionUID = 0L;
     return id_;
   }
 
+  public static final int SATISFIED_FIELD_NUMBER = 5;
+  private boolean satisfied_;
+  /**
+   * <code>bool satisfied = 5;</code>
+   * @return The satisfied.
+   */
+  @java.lang.Override
+  public boolean getSatisfied() {
+    return satisfied_;
+  }
+
   private byte memoizedIsInitialized = -1;
   @java.lang.Override
   public final boolean isInitialized() {
@@ -257,6 +273,9 @@ private static final long serialVersionUID = 0L;
     if (id_ != 0) {
       output.writeInt32(4, id_);
     }
+    if (satisfied_ != false) {
+      output.writeBool(5, satisfied_);
+    }
     unknownFields.writeTo(output);
   }
 
@@ -278,6 +297,10 @@ private static final long serialVersionUID = 0L;
     if (id_ != 0) {
       size += com.google.protobuf.CodedOutputStream
         .computeInt32Size(4, id_);
+    }
+    if (satisfied_ != false) {
+      size += com.google.protobuf.CodedOutputStream
+        .computeBoolSize(5, satisfied_);
     }
     size += unknownFields.getSerializedSize();
     memoizedSize = size;
@@ -302,6 +325,8 @@ private static final long serialVersionUID = 0L;
         .equals(other.getPhone())) return false;
     if (getId()
         != other.getId()) return false;
+    if (getSatisfied()
+        != other.getSatisfied()) return false;
     if (!unknownFields.equals(other.unknownFields)) return false;
     return true;
   }
@@ -321,6 +346,9 @@ private static final long serialVersionUID = 0L;
     hash = (53 * hash) + getPhone().hashCode();
     hash = (37 * hash) + ID_FIELD_NUMBER;
     hash = (53 * hash) + getId();
+    hash = (37 * hash) + SATISFIED_FIELD_NUMBER;
+    hash = (53 * hash) + com.google.protobuf.Internal.hashBoolean(
+        getSatisfied());
     hash = (29 * hash) + unknownFields.hashCode();
     memoizedHashCode = hash;
     return hash;
@@ -462,6 +490,8 @@ private static final long serialVersionUID = 0L;
 
       id_ = 0;
 
+      satisfied_ = false;
+
       return this;
     }
 
@@ -492,6 +522,7 @@ private static final long serialVersionUID = 0L;
       result.lastName_ = lastName_;
       result.phone_ = phone_;
       result.id_ = id_;
+      result.satisfied_ = satisfied_;
       onBuilt();
       return result;
     }
@@ -554,6 +585,9 @@ private static final long serialVersionUID = 0L;
       }
       if (other.getId() != 0) {
         setId(other.getId());
+      }
+      if (other.getSatisfied() != false) {
+        setSatisfied(other.getSatisfied());
       }
       this.mergeUnknownFields(other.unknownFields);
       onChanged();
@@ -839,6 +873,37 @@ private static final long serialVersionUID = 0L;
     public Builder clearId() {
       
       id_ = 0;
+      onChanged();
+      return this;
+    }
+
+    private boolean satisfied_ ;
+    /**
+     * <code>bool satisfied = 5;</code>
+     * @return The satisfied.
+     */
+    @java.lang.Override
+    public boolean getSatisfied() {
+      return satisfied_;
+    }
+    /**
+     * <code>bool satisfied = 5;</code>
+     * @param value The satisfied to set.
+     * @return This builder for chaining.
+     */
+    public Builder setSatisfied(boolean value) {
+      
+      satisfied_ = value;
+      onChanged();
+      return this;
+    }
+    /**
+     * <code>bool satisfied = 5;</code>
+     * @return This builder for chaining.
+     */
+    public Builder clearSatisfied() {
+      
+      satisfied_ = false;
       onChanged();
       return this;
     }

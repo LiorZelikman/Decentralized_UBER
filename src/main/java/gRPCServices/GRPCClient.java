@@ -68,8 +68,4 @@ public class GRPCClient {
         return null;
     }
 
-    public void occupyRide(Integer rideID) {
-
-    }
-
 }

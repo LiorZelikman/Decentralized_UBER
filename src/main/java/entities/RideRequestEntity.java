@@ -12,7 +12,7 @@ import java.time.LocalDate;
 @Entity
 public class RideRequestEntity {
     @Id
-    private Integer requestId;
+    private int requestId;
 
     private Point2D.Double srcPoint;
     private Point2D.Double dstPoint;
@@ -31,9 +31,9 @@ public class RideRequestEntity {
         this.srcPoint = new Point2D.Double(req.getSrcPoint().getX(), req.getSrcPoint().getY());
         this.dstPoint = new Point2D.Double(req.getDstPoint().getX(), req.getDstPoint().getY());
         String[] date = req.getDate().split("-");
-        Integer year = Integer.valueOf(date[0]);
-        Integer mon = Integer.valueOf(date[1]);
-        Integer day = Integer.valueOf(date[2]);
+        int year = Integer.parseInt(date[0]);
+        int mon = Integer.parseInt(date[1]);
+        int day = Integer.parseInt(date[2]);
         this.departureDate = LocalDate.of(year, mon, day);
 
     }
@@ -68,5 +68,13 @@ public class RideRequestEntity {
                 .setDstPoint(Point.newBuilder().setX(this.getDstPoint().getX()).setY(this.getDstPoint().getY()).build())
                 .setDate(this.getDepartureDate().toString())
                 .build();
+    }
+
+    public int getRequestId() {
+        return requestId;
+    }
+
+    public void setRequestId(int requestId) {
+        this.requestId = requestId;
     }
 }
