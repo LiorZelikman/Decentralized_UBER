@@ -33,15 +33,15 @@ public class GRPCService extends ServerCommunicationGrpc.ServerCommunicationImpl
     public void hasCompatibleRide(RideRequest rideRequest, StreamObserver<RideOffer> responseObserver){
         for(Ride currentRide : rides.values()){
             if(currentRide.doesRideMatch(rideRequest)){
+                RideRequestEntity rideRequestEntity = new RideRequestEntity(rideRequest);
                 try {
-                    RideRequestEntity rideRequestEntity = new RideRequestEntity(rideRequest);
                     rideRequestEntity.setRequestId(zooKeeper.supplyID());
                     zooKeeper.assign(currentRide.getRide_id(), rideRequestEntity.toRideRequest());
                 } catch (KeeperException|InterruptedException e) {
                     e.printStackTrace();
                     System.out.println("hasCompatibleRide - supplyID failed (somehow)");
                 }
-                RideOfferEntity offer = rideOffers.get(currentRide.getRide_id());
+                RideOfferEntity offer = rideOffers.get(rideRequestEntity.getRequestId());
                 //RideOffer offer = assignRide(rides, ride.getRide_id());
                 if(offer.isSatisfied()){
                     responseObserver.onNext(currentRide.toRideOffer());

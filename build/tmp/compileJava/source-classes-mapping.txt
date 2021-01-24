@@ -59,18 +59,18 @@ entities/Snapshot.java
  entities.Snapshot
 entities/RideOfferEntity.java
  entities.RideOfferEntity
+zk/ZKConnection.java
+ zk.ZKConnection
+entities/Ride.java
+ entities.Ride
 zk/ZookeeperWatcher.java
  zk.ZookeeperWatcher
 host/controllers/RideController.java
  host.controllers.RideController
+services/RidesService.java
+ services.RidesService
 gRPCServices/GRPCServer.java
  gRPCServices.GRPCServer
  gRPCServices.GRPCServer$1
-services/RidesService.java
- services.RidesService
 gRPCServices/GRPCService.java
  gRPCServices.GRPCService
-entities/Ride.java
- entities.Ride
-zk/ZKConnection.java
- zk.ZKConnection

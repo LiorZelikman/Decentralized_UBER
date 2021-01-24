@@ -156,6 +156,7 @@ public class RidesService{
         }
         RideOffer grpcRideOffer = grpcClient.hasCompatibleRide(req);
         if(grpcRideOffer == null){
+            zooKeeper.assign(-1, req);
             return new RideOfferEntity(req);
         }
 

@@ -90,15 +90,20 @@ public class ZookeeperWatcher implements Watcher {
                 RideOfferEntity rideOfferEntity = new RideOfferEntity(rideOfferDescription);
 
                 Integer requestID = Integer.valueOf(data[6]);
-                Ride ride = rides.get(rideID);
-                if(ride != null) {
-                    Integer newVacancies = ride.getVacancies() - 1;
-                    if(newVacancies >= 0) {
-                        Ride newRide = new Ride(ride);
-                        newRide.setVacancies(newVacancies);
-                        rides.replace(rideID, ride, newRide);
-                        RideOfferEntity newRideOffer = new RideOfferEntity(newRide.toRideOffer(), rideOfferEntity.toRideRequest());
-                        rideOffers.put(requestID, newRideOffer);
+                if(rideID == -1){
+                    RideOfferEntity newRideOffer = new RideOfferEntity(rideOfferEntity.toRideRequest());
+                    rideOffers.put(requestID, newRideOffer);
+                } else {
+                    Ride ride = rides.get(rideID);
+                    if (ride != null) {
+                        Integer newVacancies = ride.getVacancies() - 1;
+                        if (newVacancies >= 0) {
+                            Ride newRide = new Ride(ride);
+                            newRide.setVacancies(newVacancies);
+                            rides.replace(rideID, ride, newRide);
+                            RideOfferEntity newRideOffer = new RideOfferEntity(newRide.toRideOffer(), rideOfferEntity.toRideRequest());
+                            rideOffers.put(requestID, newRideOffer);
+                        }
                     }
                 }
                 zkClient.delete(pathToDelete, -1);
