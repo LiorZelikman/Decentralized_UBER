@@ -92,6 +92,68 @@ public final class ServerCommunicationGrpc {
     return getOccupyRideMethod;
   }
 
+  private static volatile io.grpc.MethodDescriptor<generated.Point,
+      generated.RideSnapshot> getGetRidesMethod;
+
+  @io.grpc.stub.annotations.RpcMethod(
+      fullMethodName = SERVICE_NAME + '/' + "getRides",
+      requestType = generated.Point.class,
+      responseType = generated.RideSnapshot.class,
+      methodType = io.grpc.MethodDescriptor.MethodType.SERVER_STREAMING)
+  public static io.grpc.MethodDescriptor<generated.Point,
+      generated.RideSnapshot> getGetRidesMethod() {
+    io.grpc.MethodDescriptor<generated.Point, generated.RideSnapshot> getGetRidesMethod;
+    if ((getGetRidesMethod = ServerCommunicationGrpc.getGetRidesMethod) == null) {
+      synchronized (ServerCommunicationGrpc.class) {
+        if ((getGetRidesMethod = ServerCommunicationGrpc.getGetRidesMethod) == null) {
+          ServerCommunicationGrpc.getGetRidesMethod = getGetRidesMethod =
+              io.grpc.MethodDescriptor.<generated.Point, generated.RideSnapshot>newBuilder()
+              .setType(io.grpc.MethodDescriptor.MethodType.SERVER_STREAMING)
+              .setFullMethodName(generateFullMethodName(SERVICE_NAME, "getRides"))
+              .setSampledToLocalTracing(true)
+              .setRequestMarshaller(io.grpc.protobuf.ProtoUtils.marshaller(
+                  generated.Point.getDefaultInstance()))
+              .setResponseMarshaller(io.grpc.protobuf.ProtoUtils.marshaller(
+                  generated.RideSnapshot.getDefaultInstance()))
+              .setSchemaDescriptor(new ServerCommunicationMethodDescriptorSupplier("getRides"))
+              .build();
+        }
+      }
+    }
+    return getGetRidesMethod;
+  }
+
+  private static volatile io.grpc.MethodDescriptor<generated.Point,
+      generated.RideOfferSnapshot> getGetRideOffersMethod;
+
+  @io.grpc.stub.annotations.RpcMethod(
+      fullMethodName = SERVICE_NAME + '/' + "getRideOffers",
+      requestType = generated.Point.class,
+      responseType = generated.RideOfferSnapshot.class,
+      methodType = io.grpc.MethodDescriptor.MethodType.SERVER_STREAMING)
+  public static io.grpc.MethodDescriptor<generated.Point,
+      generated.RideOfferSnapshot> getGetRideOffersMethod() {
+    io.grpc.MethodDescriptor<generated.Point, generated.RideOfferSnapshot> getGetRideOffersMethod;
+    if ((getGetRideOffersMethod = ServerCommunicationGrpc.getGetRideOffersMethod) == null) {
+      synchronized (ServerCommunicationGrpc.class) {
+        if ((getGetRideOffersMethod = ServerCommunicationGrpc.getGetRideOffersMethod) == null) {
+          ServerCommunicationGrpc.getGetRideOffersMethod = getGetRideOffersMethod =
+              io.grpc.MethodDescriptor.<generated.Point, generated.RideOfferSnapshot>newBuilder()
+              .setType(io.grpc.MethodDescriptor.MethodType.SERVER_STREAMING)
+              .setFullMethodName(generateFullMethodName(SERVICE_NAME, "getRideOffers"))
+              .setSampledToLocalTracing(true)
+              .setRequestMarshaller(io.grpc.protobuf.ProtoUtils.marshaller(
+                  generated.Point.getDefaultInstance()))
+              .setResponseMarshaller(io.grpc.protobuf.ProtoUtils.marshaller(
+                  generated.RideOfferSnapshot.getDefaultInstance()))
+              .setSchemaDescriptor(new ServerCommunicationMethodDescriptorSupplier("getRideOffers"))
+              .build();
+        }
+      }
+    }
+    return getGetRideOffersMethod;
+  }
+
   /**
    * Creates a new async stub that supports all call types for the service
    */
@@ -169,6 +231,20 @@ public final class ServerCommunicationGrpc {
       asyncUnimplementedUnaryCall(getOccupyRideMethod(), responseObserver);
     }
 
+    /**
+     */
+    public void getRides(generated.Point request,
+        io.grpc.stub.StreamObserver<generated.RideSnapshot> responseObserver) {
+      asyncUnimplementedUnaryCall(getGetRidesMethod(), responseObserver);
+    }
+
+    /**
+     */
+    public void getRideOffers(generated.Point request,
+        io.grpc.stub.StreamObserver<generated.RideOfferSnapshot> responseObserver) {
+      asyncUnimplementedUnaryCall(getGetRideOffersMethod(), responseObserver);
+    }
+
     @java.lang.Override public final io.grpc.ServerServiceDefinition bindService() {
       return io.grpc.ServerServiceDefinition.builder(getServiceDescriptor())
           .addMethod(
@@ -185,6 +261,20 @@ public final class ServerCommunicationGrpc {
                 generated.RideOffer,
                 generated.RideOffer>(
                   this, METHODID_OCCUPY_RIDE)))
+          .addMethod(
+            getGetRidesMethod(),
+            asyncServerStreamingCall(
+              new MethodHandlers<
+                generated.Point,
+                generated.RideSnapshot>(
+                  this, METHODID_GET_RIDES)))
+          .addMethod(
+            getGetRideOffersMethod(),
+            asyncServerStreamingCall(
+              new MethodHandlers<
+                generated.Point,
+                generated.RideOfferSnapshot>(
+                  this, METHODID_GET_RIDE_OFFERS)))
           .build();
     }
   }
@@ -233,6 +323,22 @@ public final class ServerCommunicationGrpc {
       asyncUnaryCall(
           getChannel().newCall(getOccupyRideMethod(), getCallOptions()), request, responseObserver);
     }
+
+    /**
+     */
+    public void getRides(generated.Point request,
+        io.grpc.stub.StreamObserver<generated.RideSnapshot> responseObserver) {
+      asyncServerStreamingCall(
+          getChannel().newCall(getGetRidesMethod(), getCallOptions()), request, responseObserver);
+    }
+
+    /**
+     */
+    public void getRideOffers(generated.Point request,
+        io.grpc.stub.StreamObserver<generated.RideOfferSnapshot> responseObserver) {
+      asyncServerStreamingCall(
+          getChannel().newCall(getGetRideOffersMethod(), getCallOptions()), request, responseObserver);
+    }
   }
 
   /**
@@ -276,6 +382,22 @@ public final class ServerCommunicationGrpc {
     public generated.RideOffer occupyRide(generated.RideOffer request) {
       return blockingUnaryCall(
           getChannel(), getOccupyRideMethod(), getCallOptions(), request);
+    }
+
+    /**
+     */
+    public java.util.Iterator<generated.RideSnapshot> getRides(
+        generated.Point request) {
+      return blockingServerStreamingCall(
+          getChannel(), getGetRidesMethod(), getCallOptions(), request);
+    }
+
+    /**
+     */
+    public java.util.Iterator<generated.RideOfferSnapshot> getRideOffers(
+        generated.Point request) {
+      return blockingServerStreamingCall(
+          getChannel(), getGetRideOffersMethod(), getCallOptions(), request);
     }
   }
 
@@ -327,6 +449,8 @@ public final class ServerCommunicationGrpc {
 
   private static final int METHODID_HAS_COMPATIBLE_RIDE = 0;
   private static final int METHODID_OCCUPY_RIDE = 1;
+  private static final int METHODID_GET_RIDES = 2;
+  private static final int METHODID_GET_RIDE_OFFERS = 3;
 
   private static final class MethodHandlers<Req, Resp> implements
       io.grpc.stub.ServerCalls.UnaryMethod<Req, Resp>,
@@ -352,6 +476,14 @@ public final class ServerCommunicationGrpc {
         case METHODID_OCCUPY_RIDE:
           serviceImpl.occupyRide((generated.RideOffer) request,
               (io.grpc.stub.StreamObserver<generated.RideOffer>) responseObserver);
+          break;
+        case METHODID_GET_RIDES:
+          serviceImpl.getRides((generated.Point) request,
+              (io.grpc.stub.StreamObserver<generated.RideSnapshot>) responseObserver);
+          break;
+        case METHODID_GET_RIDE_OFFERS:
+          serviceImpl.getRideOffers((generated.Point) request,
+              (io.grpc.stub.StreamObserver<generated.RideOfferSnapshot>) responseObserver);
           break;
         default:
           throw new AssertionError();
@@ -416,6 +548,8 @@ public final class ServerCommunicationGrpc {
               .setSchemaDescriptor(new ServerCommunicationFileDescriptorSupplier())
               .addMethod(getHasCompatibleRideMethod())
               .addMethod(getOccupyRideMethod())
+              .addMethod(getGetRidesMethod())
+              .addMethod(getGetRideOffersMethod())
               .build();
         }
       }

@@ -3,10 +3,7 @@ package gRPCServices;
 import entities.Ride;
 import entities.RideOfferEntity;
 import entities.RideRequestEntity;
-import generated.Point;
-import generated.RideOffer;
-import generated.RideRequest;
-import generated.ServerCommunicationGrpc;
+import generated.*;
 import io.grpc.stub.StreamObserver;
 import org.apache.zookeeper.KeeperException;
 import services.RidesService;
@@ -55,5 +52,22 @@ public class GRPCService extends ServerCommunicationGrpc.ServerCommunicationImpl
             }
         }
         responseObserver.onCompleted();
+    }
+
+
+    @Override
+    public void getRides(Point point, StreamObserver<RideSnapshot> rideSnapshot){
+        for(Ride ride : rides.values()){
+            rideSnapshot.onNext(RideSnapshot.newBuilder().setDescription(ride.toCustomString()).build());
+        }
+        rideSnapshot.onCompleted();
+    }
+
+    @Override
+    public void getRideOffers(Point point, StreamObserver<RideOfferSnapshot> rideOfferSnapshot){
+        for(RideOfferEntity rideOffer : rideOffers.values()){
+            rideOfferSnapshot.onNext(RideOfferSnapshot.newBuilder().setDescription(rideOffer.toCustomString()).build());
+        }
+        rideOfferSnapshot.onCompleted();
     }
 }

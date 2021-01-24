@@ -1,7 +1,7 @@
 java/generated/RideOfferOrBuilder.java
  generated.RideOfferOrBuilder
-gRPCServices/GRPCClient.java
- gRPCServices.GRPCClient
+entities/RideOfferEntity.java
+ entities.RideOfferEntity
 entities/PathRequest.java
  entities.PathRequest
 java/generated/PointOrBuilder.java
@@ -14,8 +14,8 @@ java/generated/RideSnapshot.java
  generated.RideSnapshot$Builder
 java/generated/RideRequestOrBuilder.java
  generated.RideRequestOrBuilder
-java/generated/RideRequestSnapshotOrBuilder.java
- generated.RideRequestSnapshotOrBuilder
+entities/Snapshot.java
+ entities.Snapshot
 java/generated/RouteGuideProto.java
  generated.RouteGuideProto
 java/generated/Point.java
@@ -24,18 +24,16 @@ java/generated/Point.java
  generated.Point$Builder
 java/generated/RideSnapshotOrBuilder.java
  generated.RideSnapshotOrBuilder
-java/generated/RideRequestSnapshot.java
- generated.RideRequestSnapshot
- generated.RideRequestSnapshot$1
- generated.RideRequestSnapshot$Builder
-java/generated/RideOffer.java
- generated.RideOffer
- generated.RideOffer$1
- generated.RideOffer$Builder
-host/Main.java
- host.Main
 entities/RideRequestEntity.java
  entities.RideRequestEntity
+java/generated/RideOfferSnapshotOrBuilder.java
+ generated.RideOfferSnapshotOrBuilder
+java/generated/RideOfferSnapshot.java
+ generated.RideOfferSnapshot
+ generated.RideOfferSnapshot$1
+ generated.RideOfferSnapshot$Builder
+host/Main.java
+ host.Main
 java/generated/RideRequest.java
  generated.RideRequest
  generated.RideRequest$1
@@ -55,22 +53,24 @@ grpc/generated/ServerCommunicationGrpc.java
  generated.ServerCommunicationGrpc$ServerCommunicationImplBase
  generated.ServerCommunicationGrpc$ServerCommunicationMethodDescriptorSupplier
  generated.ServerCommunicationGrpc$ServerCommunicationStub
-entities/Snapshot.java
- entities.Snapshot
-entities/RideOfferEntity.java
- entities.RideOfferEntity
-zk/ZKConnection.java
- zk.ZKConnection
-entities/Ride.java
- entities.Ride
+java/generated/RideOffer.java
+ generated.RideOffer
+ generated.RideOffer$1
+ generated.RideOffer$Builder
 zk/ZookeeperWatcher.java
  zk.ZookeeperWatcher
 host/controllers/RideController.java
  host.controllers.RideController
-services/RidesService.java
- services.RidesService
+zk/ZKConnection.java
+ zk.ZKConnection
 gRPCServices/GRPCServer.java
  gRPCServices.GRPCServer
  gRPCServices.GRPCServer$1
+entities/Ride.java
+ entities.Ride
 gRPCServices/GRPCService.java
  gRPCServices.GRPCService
+gRPCServices/GRPCClient.java
+ gRPCServices.GRPCClient
+services/RidesService.java
+ services.RidesService

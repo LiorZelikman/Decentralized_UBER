@@ -1,9 +1,8 @@
 package gRPCServices;
 
-import generated.Point;
-import generated.RideOffer;
-import generated.RideRequest;
-import generated.ServerCommunicationGrpc;
+import entities.Ride;
+import entities.RideOfferEntity;
+import generated.*;
 import io.grpc.Channel;
 import io.grpc.ManagedChannelBuilder;
 import io.grpc.stub.StreamObserver;
@@ -42,30 +41,52 @@ public class GRPCClient {
                     }
                 } catch(Exception e){ }
             }
-            /*entry.getValue().hasCompatibleRide(req, new StreamObserver<RideOffer>() {
 
-                @Override
-                public void onNext(RideOffer value) {
-                    finalOffer.putIfAbsent(2, value);
-                }
-
-                @Override
-                public void onError(Throwable t) {
-                    currentServers.put(entry.getKey(), currentServers.get(entry.getKey()) + 1);
-                    Channel newChannel = ManagedChannelBuilder.
-                            forAddress("127.0.0.1", city_to_grpc_port.get(entry.getKey()).get(currentServers.get(entry.getKey())))
-                            .usePlaintext().build();
-                    ServerCommunicationGrpc.ServerCommunicationStub newStub = ServerCommunicationGrpc.newStub(newChannel);
-                    newStub.hasCompatibleRide(req, this);
-                }
-
-                @Override
-                public void onCompleted() {
-                    isFinished.put(entry.getKey(), true);
-                }
-            });*/
         }
         return null;
+    }
+
+
+    public ArrayList<Ride> getRides(){
+        ArrayList<Ride> allRides = new ArrayList<>();
+        for(Map.Entry<Point2D.Double, ArrayList<Integer>> entry : city_to_grpc_port.entrySet()) {
+            for (Integer port : entry.getValue()) {
+                Channel newChannel = ManagedChannelBuilder.
+                        forAddress("127.0.0.1", port)
+                        .usePlaintext().build();
+                ServerCommunicationGrpc.ServerCommunicationBlockingStub newStub = ServerCommunicationGrpc.newBlockingStub(newChannel);
+                try {
+                    Iterator<RideSnapshot> rides = newStub.getRides(null);
+                    while (rides.hasNext()) {
+                        allRides.add(new Ride(rides.next().getDescription()));
+                    }
+                    break;
+                } catch (Exception e) {
+                }
+            }
+        }
+        return allRides;
+    }
+
+    public ArrayList<RideOfferEntity> getRideOffers(){
+        ArrayList<RideOfferEntity> allRideOffers = new ArrayList<>();
+        for(Map.Entry<Point2D.Double, ArrayList<Integer>> entry : city_to_grpc_port.entrySet()) {
+            for (Integer port : entry.getValue()) {
+                Channel newChannel = ManagedChannelBuilder.
+                        forAddress("127.0.0.1", port)
+                        .usePlaintext().build();
+                ServerCommunicationGrpc.ServerCommunicationBlockingStub newStub = ServerCommunicationGrpc.newBlockingStub(newChannel);
+                try {
+                    Iterator<RideOfferSnapshot> rideOffers = newStub.getRideOffers(null);
+                    while (rideOffers.hasNext()) {
+                        allRideOffers.add(new RideOfferEntity(rideOffers.next().getDescription()));
+                    }
+                    break;
+                } catch (Exception e) {
+                }
+            }
+        }
+        return allRideOffers;
     }
 
 }

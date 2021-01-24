@@ -16,6 +16,7 @@ import io.grpc.stub.StreamObserver;
 import org.apache.zookeeper.AddWatchMode;
 import org.apache.zookeeper.KeeperException;
 import org.apache.zookeeper.ZooKeeper;
+import org.springframework.data.util.Pair;
 import org.springframework.stereotype.Component;
 import zk.ZKConnection;
 import zk.ZookeeperWatcher;
@@ -110,28 +111,10 @@ public class RidesService{
 
 
     }
-/*
-    public static RideOffer assignRide(ConcurrentMap<Integer, Ride> rides, Integer rideID){
-        Ride ride = rides.get(rideID);
-        if(ride == null){
-            return null;
-        }
-        Ride newRide = new Ride(ride);
-        int vacancies = newRide.getVacancies() - 1;
-        if (vacancies == 0){
-            if(!(rides.remove(rideID, ride))){
-                return null;
-            }
-        } else {
-            newRide.setVacancies(vacancies);
 
-            if(!(rides.replace(rideID, ride, newRide))){
-                return null;
-            }
-        }
-        return newRide.toRideOffer();
+    public Pair<ArrayList<Ride>, ArrayList<RideOfferEntity>> getSnapshot(){
+        return Pair.of(grpcClient.getRides(), grpcClient.getRideOffers());
     }
-*/
 
     public void addToRides(Ride newRide) {
         zooKeeper.addRide(newRide);

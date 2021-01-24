@@ -66,8 +66,8 @@ public class Ride {
         this.ending_pos = new Point2D.Double(Double.valueOf(fields[6]), Double.valueOf(fields[7]));
         this.departure_Date = LocalDate.of(year, mon, day);
         this.vacancies = Integer.valueOf(fields[9]);
-        this.orig_vacancies = this.vacancies;
         this.PD = Double.valueOf(fields[10]);
+        this.orig_vacancies = Integer.valueOf(fields[11]);
     }
 
     public Integer getRide_id() {
@@ -213,13 +213,13 @@ public class Ride {
         return "entities.Ride{" + "id=" + this.ride_id + ", first name='" + this.first_name + '\'' + ", last name='" + this.last_name + '\''
                 + ", phone number='" + this.phone_number + '\'' + ", starting position='" + this.starting_pos + '\''
                 + ", ending position='" + this.ending_pos + '\'' + ", departure LocalDate='" + this.departure_Date + '\''
-                + ", vacancies='" + this.vacancies + '\'' +  ", PD='" + this.PD + '}';
+                + ", vacancies='" + this.vacancies + '\'' +  ", PD='" + this.PD + ", orig vacancies=" + this.vacancies + '}';
     }
 
     public String toCustomString(){
         return "" + this.ride_id + ";" + this.first_name + ";" + this.last_name + ";" + this.phone_number + ";"
                 + this.starting_pos.x + ";" + + this.starting_pos.y + ";" + this.ending_pos.x + ";" + this.ending_pos.y + ";"
-                + this.departure_Date + ";" + this.vacancies + ";" +  + this.PD + ";";
+                + this.departure_Date + ";" + this.vacancies + ";" + this.PD + ";" + this.orig_vacancies + ";";
 
     }
 }

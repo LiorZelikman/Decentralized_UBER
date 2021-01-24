@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.web.servlet.context.ServletWebServerInitializedEvent;
 import org.springframework.context.ApplicationListener;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.data.util.Pair;
 import org.springframework.web.bind.annotation.*;
 import services.RidesService;
 
@@ -63,6 +64,9 @@ public class RideController implements ApplicationListener<ServletWebServerIniti
     Ride newRides(@RequestBody Ride newRide) throws KeeperException, InterruptedException {
         return service.save(newRide);
     }
+
+    @GetMapping(path = "/snapshot")
+    Pair<ArrayList<Ride>, ArrayList<RideOfferEntity>> getSnapshot(){return service.getSnapshot();};
 
     @PostMapping(path = "/path/")
     List<RideOfferEntity> pathPlanning(@RequestBody PathRequest pathRequest){ return service.planPath(pathRequest); }

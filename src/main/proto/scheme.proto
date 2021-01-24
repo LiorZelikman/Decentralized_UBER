@@ -35,6 +35,10 @@ service ServerCommunication {
   // Accepts a stream of RouteNotes sent while a route is being traversed,
   // while receiving other RouteNotes (e.g. from other users).
   rpc occupyRide(RideOffer) returns (RideOffer) {}
+
+  rpc getRides(Point) returns (stream RideSnapshot) {}
+
+  rpc getRideOffers(Point) returns (stream RideOfferSnapshot) {}
 }
 
 message Point {
@@ -61,7 +65,7 @@ message RideSnapshot{
   string description = 1;
 }
 
-message RideRequestSnapshot{
+message RideOfferSnapshot{
   string description = 1;
 }
 
