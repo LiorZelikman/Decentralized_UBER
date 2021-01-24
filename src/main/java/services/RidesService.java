@@ -142,11 +142,12 @@ public class RidesService{
     public RideOfferEntity requestRide(RideRequestEntity reqEntity) throws KeeperException, InterruptedException {
         reqEntity.setRequestId(zooKeeper.supplyID());
         RideRequest req = reqEntity.toRideRequest();
-        rideOffers.put(reqEntity.getRequestId(), new RideOfferEntity(req));
+        //rideOffers.put(reqEntity.getRequestId(), new RideOfferEntity(req));
         for(Ride ride : rides.values()){
             if(ride.doesRideMatch(req)){
-                zooKeeper.assign(ride.getRide_id(), reqEntity.getRequestId());
-                RideOfferEntity offer = rideOffers.get(ride.getRide_id());
+                zooKeeper.assign(ride.getRide_id(), req);
+                RideOfferEntity offer = rideOffers.get(reqEntity.getRequestId());
+
                 //RideOffer offer = assignRide(rides, ride.getRide_id());
                 if(offer.isSatisfied()){
                     return offer;
@@ -155,7 +156,7 @@ public class RidesService{
         }
         RideOffer grpcRideOffer = grpcClient.hasCompatibleRide(req);
         if(grpcRideOffer == null){
-            return new RideOfferEntity("Could not find ride", "", "", false, req);
+            return new RideOfferEntity(req);
         }
 
         return new RideOfferEntity(grpcRideOffer, req);

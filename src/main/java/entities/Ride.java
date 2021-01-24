@@ -36,7 +36,7 @@ public class Ride {
         this.ending_pos = ride.ending_pos;
         this.departure_Date = ride.departure_Date;
         this.vacancies = ride.vacancies;
-        this.orig_vacancies = ride.vacancies;
+        this.orig_vacancies = ride.orig_vacancies == null ? ride.vacancies : ride.orig_vacancies;
         this.PD = ride.PD;
     }
 

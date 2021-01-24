@@ -43,16 +43,17 @@ message Point {
 }
 
 message RideRequest {
-  Point srcPoint = 1;
-  Point dstPoint = 2;
-  string date = 3;
+  int32 id = 1;
+  Point srcPoint = 2;
+  Point dstPoint = 3;
+  string date = 4;
 }
 
 message RideOffer {
-  string firstName = 1;
-  string lastName = 2;
-  string phone = 3;
-  int32 id = 4;
+  int32 id = 1;
+  string firstName = 2;
+  string lastName = 3;
+  string phone = 4;
   bool satisfied = 5;
 }
 

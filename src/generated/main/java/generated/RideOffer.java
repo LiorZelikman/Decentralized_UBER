@@ -51,27 +51,27 @@ private static final long serialVersionUID = 0L;
           case 0:
             done = true;
             break;
-          case 10: {
-            java.lang.String s = input.readStringRequireUtf8();
+          case 8: {
 
-            firstName_ = s;
+            id_ = input.readInt32();
             break;
           }
           case 18: {
             java.lang.String s = input.readStringRequireUtf8();
 
-            lastName_ = s;
+            firstName_ = s;
             break;
           }
           case 26: {
             java.lang.String s = input.readStringRequireUtf8();
 
-            phone_ = s;
+            lastName_ = s;
             break;
           }
-          case 32: {
+          case 34: {
+            java.lang.String s = input.readStringRequireUtf8();
 
-            id_ = input.readInt32();
+            phone_ = s;
             break;
           }
           case 40: {
@@ -111,10 +111,21 @@ private static final long serialVersionUID = 0L;
             generated.RideOffer.class, generated.RideOffer.Builder.class);
   }
 
-  public static final int FIRSTNAME_FIELD_NUMBER = 1;
+  public static final int ID_FIELD_NUMBER = 1;
+  private int id_;
+  /**
+   * <code>int32 id = 1;</code>
+   * @return The id.
+   */
+  @java.lang.Override
+  public int getId() {
+    return id_;
+  }
+
+  public static final int FIRSTNAME_FIELD_NUMBER = 2;
   private volatile java.lang.Object firstName_;
   /**
-   * <code>string firstName = 1;</code>
+   * <code>string firstName = 2;</code>
    * @return The firstName.
    */
   @java.lang.Override
@@ -131,7 +142,7 @@ private static final long serialVersionUID = 0L;
     }
   }
   /**
-   * <code>string firstName = 1;</code>
+   * <code>string firstName = 2;</code>
    * @return The bytes for firstName.
    */
   @java.lang.Override
@@ -149,10 +160,10 @@ private static final long serialVersionUID = 0L;
     }
   }
 
-  public static final int LASTNAME_FIELD_NUMBER = 2;
+  public static final int LASTNAME_FIELD_NUMBER = 3;
   private volatile java.lang.Object lastName_;
   /**
-   * <code>string lastName = 2;</code>
+   * <code>string lastName = 3;</code>
    * @return The lastName.
    */
   @java.lang.Override
@@ -169,7 +180,7 @@ private static final long serialVersionUID = 0L;
     }
   }
   /**
-   * <code>string lastName = 2;</code>
+   * <code>string lastName = 3;</code>
    * @return The bytes for lastName.
    */
   @java.lang.Override
@@ -187,10 +198,10 @@ private static final long serialVersionUID = 0L;
     }
   }
 
-  public static final int PHONE_FIELD_NUMBER = 3;
+  public static final int PHONE_FIELD_NUMBER = 4;
   private volatile java.lang.Object phone_;
   /**
-   * <code>string phone = 3;</code>
+   * <code>string phone = 4;</code>
    * @return The phone.
    */
   @java.lang.Override
@@ -207,7 +218,7 @@ private static final long serialVersionUID = 0L;
     }
   }
   /**
-   * <code>string phone = 3;</code>
+   * <code>string phone = 4;</code>
    * @return The bytes for phone.
    */
   @java.lang.Override
@@ -223,17 +234,6 @@ private static final long serialVersionUID = 0L;
     } else {
       return (com.google.protobuf.ByteString) ref;
     }
-  }
-
-  public static final int ID_FIELD_NUMBER = 4;
-  private int id_;
-  /**
-   * <code>int32 id = 4;</code>
-   * @return The id.
-   */
-  @java.lang.Override
-  public int getId() {
-    return id_;
   }
 
   public static final int SATISFIED_FIELD_NUMBER = 5;
@@ -261,17 +261,17 @@ private static final long serialVersionUID = 0L;
   @java.lang.Override
   public void writeTo(com.google.protobuf.CodedOutputStream output)
                       throws java.io.IOException {
+    if (id_ != 0) {
+      output.writeInt32(1, id_);
+    }
     if (!getFirstNameBytes().isEmpty()) {
-      com.google.protobuf.GeneratedMessageV3.writeString(output, 1, firstName_);
+      com.google.protobuf.GeneratedMessageV3.writeString(output, 2, firstName_);
     }
     if (!getLastNameBytes().isEmpty()) {
-      com.google.protobuf.GeneratedMessageV3.writeString(output, 2, lastName_);
+      com.google.protobuf.GeneratedMessageV3.writeString(output, 3, lastName_);
     }
     if (!getPhoneBytes().isEmpty()) {
-      com.google.protobuf.GeneratedMessageV3.writeString(output, 3, phone_);
-    }
-    if (id_ != 0) {
-      output.writeInt32(4, id_);
+      com.google.protobuf.GeneratedMessageV3.writeString(output, 4, phone_);
     }
     if (satisfied_ != false) {
       output.writeBool(5, satisfied_);
@@ -285,18 +285,18 @@ private static final long serialVersionUID = 0L;
     if (size != -1) return size;
 
     size = 0;
-    if (!getFirstNameBytes().isEmpty()) {
-      size += com.google.protobuf.GeneratedMessageV3.computeStringSize(1, firstName_);
-    }
-    if (!getLastNameBytes().isEmpty()) {
-      size += com.google.protobuf.GeneratedMessageV3.computeStringSize(2, lastName_);
-    }
-    if (!getPhoneBytes().isEmpty()) {
-      size += com.google.protobuf.GeneratedMessageV3.computeStringSize(3, phone_);
-    }
     if (id_ != 0) {
       size += com.google.protobuf.CodedOutputStream
-        .computeInt32Size(4, id_);
+        .computeInt32Size(1, id_);
+    }
+    if (!getFirstNameBytes().isEmpty()) {
+      size += com.google.protobuf.GeneratedMessageV3.computeStringSize(2, firstName_);
+    }
+    if (!getLastNameBytes().isEmpty()) {
+      size += com.google.protobuf.GeneratedMessageV3.computeStringSize(3, lastName_);
+    }
+    if (!getPhoneBytes().isEmpty()) {
+      size += com.google.protobuf.GeneratedMessageV3.computeStringSize(4, phone_);
     }
     if (satisfied_ != false) {
       size += com.google.protobuf.CodedOutputStream
@@ -317,14 +317,14 @@ private static final long serialVersionUID = 0L;
     }
     generated.RideOffer other = (generated.RideOffer) obj;
 
+    if (getId()
+        != other.getId()) return false;
     if (!getFirstName()
         .equals(other.getFirstName())) return false;
     if (!getLastName()
         .equals(other.getLastName())) return false;
     if (!getPhone()
         .equals(other.getPhone())) return false;
-    if (getId()
-        != other.getId()) return false;
     if (getSatisfied()
         != other.getSatisfied()) return false;
     if (!unknownFields.equals(other.unknownFields)) return false;
@@ -338,14 +338,14 @@ private static final long serialVersionUID = 0L;
     }
     int hash = 41;
     hash = (19 * hash) + getDescriptor().hashCode();
+    hash = (37 * hash) + ID_FIELD_NUMBER;
+    hash = (53 * hash) + getId();
     hash = (37 * hash) + FIRSTNAME_FIELD_NUMBER;
     hash = (53 * hash) + getFirstName().hashCode();
     hash = (37 * hash) + LASTNAME_FIELD_NUMBER;
     hash = (53 * hash) + getLastName().hashCode();
     hash = (37 * hash) + PHONE_FIELD_NUMBER;
     hash = (53 * hash) + getPhone().hashCode();
-    hash = (37 * hash) + ID_FIELD_NUMBER;
-    hash = (53 * hash) + getId();
     hash = (37 * hash) + SATISFIED_FIELD_NUMBER;
     hash = (53 * hash) + com.google.protobuf.Internal.hashBoolean(
         getSatisfied());
@@ -482,13 +482,13 @@ private static final long serialVersionUID = 0L;
     @java.lang.Override
     public Builder clear() {
       super.clear();
+      id_ = 0;
+
       firstName_ = "";
 
       lastName_ = "";
 
       phone_ = "";
-
-      id_ = 0;
 
       satisfied_ = false;
 
@@ -518,10 +518,10 @@ private static final long serialVersionUID = 0L;
     @java.lang.Override
     public generated.RideOffer buildPartial() {
       generated.RideOffer result = new generated.RideOffer(this);
+      result.id_ = id_;
       result.firstName_ = firstName_;
       result.lastName_ = lastName_;
       result.phone_ = phone_;
-      result.id_ = id_;
       result.satisfied_ = satisfied_;
       onBuilt();
       return result;
@@ -571,6 +571,9 @@ private static final long serialVersionUID = 0L;
 
     public Builder mergeFrom(generated.RideOffer other) {
       if (other == generated.RideOffer.getDefaultInstance()) return this;
+      if (other.getId() != 0) {
+        setId(other.getId());
+      }
       if (!other.getFirstName().isEmpty()) {
         firstName_ = other.firstName_;
         onChanged();
@@ -582,9 +585,6 @@ private static final long serialVersionUID = 0L;
       if (!other.getPhone().isEmpty()) {
         phone_ = other.phone_;
         onChanged();
-      }
-      if (other.getId() != 0) {
-        setId(other.getId());
       }
       if (other.getSatisfied() != false) {
         setSatisfied(other.getSatisfied());
@@ -618,9 +618,40 @@ private static final long serialVersionUID = 0L;
       return this;
     }
 
+    private int id_ ;
+    /**
+     * <code>int32 id = 1;</code>
+     * @return The id.
+     */
+    @java.lang.Override
+    public int getId() {
+      return id_;
+    }
+    /**
+     * <code>int32 id = 1;</code>
+     * @param value The id to set.
+     * @return This builder for chaining.
+     */
+    public Builder setId(int value) {
+      
+      id_ = value;
+      onChanged();
+      return this;
+    }
+    /**
+     * <code>int32 id = 1;</code>
+     * @return This builder for chaining.
+     */
+    public Builder clearId() {
+      
+      id_ = 0;
+      onChanged();
+      return this;
+    }
+
     private java.lang.Object firstName_ = "";
     /**
-     * <code>string firstName = 1;</code>
+     * <code>string firstName = 2;</code>
      * @return The firstName.
      */
     public java.lang.String getFirstName() {
@@ -636,7 +667,7 @@ private static final long serialVersionUID = 0L;
       }
     }
     /**
-     * <code>string firstName = 1;</code>
+     * <code>string firstName = 2;</code>
      * @return The bytes for firstName.
      */
     public com.google.protobuf.ByteString
@@ -653,7 +684,7 @@ private static final long serialVersionUID = 0L;
       }
     }
     /**
-     * <code>string firstName = 1;</code>
+     * <code>string firstName = 2;</code>
      * @param value The firstName to set.
      * @return This builder for chaining.
      */
@@ -668,7 +699,7 @@ private static final long serialVersionUID = 0L;
       return this;
     }
     /**
-     * <code>string firstName = 1;</code>
+     * <code>string firstName = 2;</code>
      * @return This builder for chaining.
      */
     public Builder clearFirstName() {
@@ -678,7 +709,7 @@ private static final long serialVersionUID = 0L;
       return this;
     }
     /**
-     * <code>string firstName = 1;</code>
+     * <code>string firstName = 2;</code>
      * @param value The bytes for firstName to set.
      * @return This builder for chaining.
      */
@@ -696,7 +727,7 @@ private static final long serialVersionUID = 0L;
 
     private java.lang.Object lastName_ = "";
     /**
-     * <code>string lastName = 2;</code>
+     * <code>string lastName = 3;</code>
      * @return The lastName.
      */
     public java.lang.String getLastName() {
@@ -712,7 +743,7 @@ private static final long serialVersionUID = 0L;
       }
     }
     /**
-     * <code>string lastName = 2;</code>
+     * <code>string lastName = 3;</code>
      * @return The bytes for lastName.
      */
     public com.google.protobuf.ByteString
@@ -729,7 +760,7 @@ private static final long serialVersionUID = 0L;
       }
     }
     /**
-     * <code>string lastName = 2;</code>
+     * <code>string lastName = 3;</code>
      * @param value The lastName to set.
      * @return This builder for chaining.
      */
@@ -744,7 +775,7 @@ private static final long serialVersionUID = 0L;
       return this;
     }
     /**
-     * <code>string lastName = 2;</code>
+     * <code>string lastName = 3;</code>
      * @return This builder for chaining.
      */
     public Builder clearLastName() {
@@ -754,7 +785,7 @@ private static final long serialVersionUID = 0L;
       return this;
     }
     /**
-     * <code>string lastName = 2;</code>
+     * <code>string lastName = 3;</code>
      * @param value The bytes for lastName to set.
      * @return This builder for chaining.
      */
@@ -772,7 +803,7 @@ private static final long serialVersionUID = 0L;
 
     private java.lang.Object phone_ = "";
     /**
-     * <code>string phone = 3;</code>
+     * <code>string phone = 4;</code>
      * @return The phone.
      */
     public java.lang.String getPhone() {
@@ -788,7 +819,7 @@ private static final long serialVersionUID = 0L;
       }
     }
     /**
-     * <code>string phone = 3;</code>
+     * <code>string phone = 4;</code>
      * @return The bytes for phone.
      */
     public com.google.protobuf.ByteString
@@ -805,7 +836,7 @@ private static final long serialVersionUID = 0L;
       }
     }
     /**
-     * <code>string phone = 3;</code>
+     * <code>string phone = 4;</code>
      * @param value The phone to set.
      * @return This builder for chaining.
      */
@@ -820,7 +851,7 @@ private static final long serialVersionUID = 0L;
       return this;
     }
     /**
-     * <code>string phone = 3;</code>
+     * <code>string phone = 4;</code>
      * @return This builder for chaining.
      */
     public Builder clearPhone() {
@@ -830,7 +861,7 @@ private static final long serialVersionUID = 0L;
       return this;
     }
     /**
-     * <code>string phone = 3;</code>
+     * <code>string phone = 4;</code>
      * @param value The bytes for phone to set.
      * @return This builder for chaining.
      */
@@ -842,37 +873,6 @@ private static final long serialVersionUID = 0L;
   checkByteStringIsUtf8(value);
       
       phone_ = value;
-      onChanged();
-      return this;
-    }
-
-    private int id_ ;
-    /**
-     * <code>int32 id = 4;</code>
-     * @return The id.
-     */
-    @java.lang.Override
-    public int getId() {
-      return id_;
-    }
-    /**
-     * <code>int32 id = 4;</code>
-     * @param value The id to set.
-     * @return This builder for chaining.
-     */
-    public Builder setId(int value) {
-      
-      id_ = value;
-      onChanged();
-      return this;
-    }
-    /**
-     * <code>int32 id = 4;</code>
-     * @return This builder for chaining.
-     */
-    public Builder clearId() {
-      
-      id_ = 0;
       onChanged();
       return this;
     }

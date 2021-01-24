@@ -2,6 +2,7 @@ package gRPCServices;
 
 import entities.Ride;
 import entities.RideOfferEntity;
+import entities.RideRequestEntity;
 import generated.Point;
 import generated.RideOffer;
 import generated.RideRequest;
@@ -33,7 +34,9 @@ public class GRPCService extends ServerCommunicationGrpc.ServerCommunicationImpl
         for(Ride currentRide : rides.values()){
             if(currentRide.doesRideMatch(rideRequest)){
                 try {
-                    zooKeeper.assign(currentRide.getRide_id(), zooKeeper.supplyID());
+                    RideRequestEntity rideRequestEntity = new RideRequestEntity(rideRequest);
+                    rideRequestEntity.setRequestId(zooKeeper.supplyID());
+                    zooKeeper.assign(currentRide.getRide_id(), rideRequestEntity.toRideRequest());
                 } catch (KeeperException|InterruptedException e) {
                     e.printStackTrace();
                     System.out.println("hasCompatibleRide - supplyID failed (somehow)");

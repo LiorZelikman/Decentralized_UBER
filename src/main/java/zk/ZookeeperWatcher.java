@@ -8,13 +8,14 @@ import services.RidesService;
 import java.awt.geom.Point2D;
 import java.nio.charset.StandardCharsets;
 import java.time.LocalDate;
+import java.util.Arrays;
 import java.util.concurrent.ConcurrentHashMap;
 
 public class ZookeeperWatcher implements Watcher {
     ZooKeeper zkClient;
     Integer port;
     private ConcurrentHashMap<Integer, Ride> rides;
-    ConcurrentHashMap<Integer, RideOfferEntity> rideOffers;
+    private ConcurrentHashMap<Integer, RideOfferEntity> rideOffers;
 
     public ZookeeperWatcher(){ }
 
@@ -85,16 +86,19 @@ public class ZookeeperWatcher implements Watcher {
                 String pathToDelete = megaPathToDelete + "/" + serverID;
                 String[] data = getZNodeData(megaPathToDelete).split(";");
                 Integer rideID = Integer.valueOf(data[0]);
-                Integer requestID = Integer.valueOf(data[1]);
+                String rideOfferDescription = String.join(";", Arrays.copyOfRange(data, 1, data.length));
+                RideOfferEntity rideOfferEntity = new RideOfferEntity(rideOfferDescription);
+
+                Integer requestID = Integer.valueOf(data[6]);
                 Ride ride = rides.get(rideID);
                 if(ride != null) {
                     Integer newVacancies = ride.getVacancies() - 1;
-                    if(newVacancies > 0) {
+                    if(newVacancies >= 0) {
                         Ride newRide = new Ride(ride);
                         newRide.setVacancies(newVacancies);
                         rides.replace(rideID, ride, newRide);
-                        RideOfferEntity newRideOffer = new RideOfferEntity(newRide.toRideOffer(), rideOffers.get(requestID).toRideRequest());
-                        rideOffers.replace(requestID, rideOffers.get(requestID), newRideOffer);
+                        RideOfferEntity newRideOffer = new RideOfferEntity(newRide.toRideOffer(), rideOfferEntity.toRideRequest());
+                        rideOffers.put(requestID, newRideOffer);
                     }
                 }
                 zkClient.delete(pathToDelete, -1);

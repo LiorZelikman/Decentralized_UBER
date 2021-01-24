@@ -49,7 +49,12 @@ private static final long serialVersionUID = 0L;
           case 0:
             done = true;
             break;
-          case 10: {
+          case 8: {
+
+            id_ = input.readInt32();
+            break;
+          }
+          case 18: {
             generated.Point.Builder subBuilder = null;
             if (srcPoint_ != null) {
               subBuilder = srcPoint_.toBuilder();
@@ -62,7 +67,7 @@ private static final long serialVersionUID = 0L;
 
             break;
           }
-          case 18: {
+          case 26: {
             generated.Point.Builder subBuilder = null;
             if (dstPoint_ != null) {
               subBuilder = dstPoint_.toBuilder();
@@ -75,7 +80,7 @@ private static final long serialVersionUID = 0L;
 
             break;
           }
-          case 26: {
+          case 34: {
             java.lang.String s = input.readStringRequireUtf8();
 
             date_ = s;
@@ -113,10 +118,21 @@ private static final long serialVersionUID = 0L;
             generated.RideRequest.class, generated.RideRequest.Builder.class);
   }
 
-  public static final int SRCPOINT_FIELD_NUMBER = 1;
+  public static final int ID_FIELD_NUMBER = 1;
+  private int id_;
+  /**
+   * <code>int32 id = 1;</code>
+   * @return The id.
+   */
+  @java.lang.Override
+  public int getId() {
+    return id_;
+  }
+
+  public static final int SRCPOINT_FIELD_NUMBER = 2;
   private generated.Point srcPoint_;
   /**
-   * <code>.servercommunication.Point srcPoint = 1;</code>
+   * <code>.servercommunication.Point srcPoint = 2;</code>
    * @return Whether the srcPoint field is set.
    */
   @java.lang.Override
@@ -124,7 +140,7 @@ private static final long serialVersionUID = 0L;
     return srcPoint_ != null;
   }
   /**
-   * <code>.servercommunication.Point srcPoint = 1;</code>
+   * <code>.servercommunication.Point srcPoint = 2;</code>
    * @return The srcPoint.
    */
   @java.lang.Override
@@ -132,17 +148,17 @@ private static final long serialVersionUID = 0L;
     return srcPoint_ == null ? generated.Point.getDefaultInstance() : srcPoint_;
   }
   /**
-   * <code>.servercommunication.Point srcPoint = 1;</code>
+   * <code>.servercommunication.Point srcPoint = 2;</code>
    */
   @java.lang.Override
   public generated.PointOrBuilder getSrcPointOrBuilder() {
     return getSrcPoint();
   }
 
-  public static final int DSTPOINT_FIELD_NUMBER = 2;
+  public static final int DSTPOINT_FIELD_NUMBER = 3;
   private generated.Point dstPoint_;
   /**
-   * <code>.servercommunication.Point dstPoint = 2;</code>
+   * <code>.servercommunication.Point dstPoint = 3;</code>
    * @return Whether the dstPoint field is set.
    */
   @java.lang.Override
@@ -150,7 +166,7 @@ private static final long serialVersionUID = 0L;
     return dstPoint_ != null;
   }
   /**
-   * <code>.servercommunication.Point dstPoint = 2;</code>
+   * <code>.servercommunication.Point dstPoint = 3;</code>
    * @return The dstPoint.
    */
   @java.lang.Override
@@ -158,17 +174,17 @@ private static final long serialVersionUID = 0L;
     return dstPoint_ == null ? generated.Point.getDefaultInstance() : dstPoint_;
   }
   /**
-   * <code>.servercommunication.Point dstPoint = 2;</code>
+   * <code>.servercommunication.Point dstPoint = 3;</code>
    */
   @java.lang.Override
   public generated.PointOrBuilder getDstPointOrBuilder() {
     return getDstPoint();
   }
 
-  public static final int DATE_FIELD_NUMBER = 3;
+  public static final int DATE_FIELD_NUMBER = 4;
   private volatile java.lang.Object date_;
   /**
-   * <code>string date = 3;</code>
+   * <code>string date = 4;</code>
    * @return The date.
    */
   @java.lang.Override
@@ -185,7 +201,7 @@ private static final long serialVersionUID = 0L;
     }
   }
   /**
-   * <code>string date = 3;</code>
+   * <code>string date = 4;</code>
    * @return The bytes for date.
    */
   @java.lang.Override
@@ -217,14 +233,17 @@ private static final long serialVersionUID = 0L;
   @java.lang.Override
   public void writeTo(com.google.protobuf.CodedOutputStream output)
                       throws java.io.IOException {
+    if (id_ != 0) {
+      output.writeInt32(1, id_);
+    }
     if (srcPoint_ != null) {
-      output.writeMessage(1, getSrcPoint());
+      output.writeMessage(2, getSrcPoint());
     }
     if (dstPoint_ != null) {
-      output.writeMessage(2, getDstPoint());
+      output.writeMessage(3, getDstPoint());
     }
     if (!getDateBytes().isEmpty()) {
-      com.google.protobuf.GeneratedMessageV3.writeString(output, 3, date_);
+      com.google.protobuf.GeneratedMessageV3.writeString(output, 4, date_);
     }
     unknownFields.writeTo(output);
   }
@@ -235,16 +254,20 @@ private static final long serialVersionUID = 0L;
     if (size != -1) return size;
 
     size = 0;
+    if (id_ != 0) {
+      size += com.google.protobuf.CodedOutputStream
+        .computeInt32Size(1, id_);
+    }
     if (srcPoint_ != null) {
       size += com.google.protobuf.CodedOutputStream
-        .computeMessageSize(1, getSrcPoint());
+        .computeMessageSize(2, getSrcPoint());
     }
     if (dstPoint_ != null) {
       size += com.google.protobuf.CodedOutputStream
-        .computeMessageSize(2, getDstPoint());
+        .computeMessageSize(3, getDstPoint());
     }
     if (!getDateBytes().isEmpty()) {
-      size += com.google.protobuf.GeneratedMessageV3.computeStringSize(3, date_);
+      size += com.google.protobuf.GeneratedMessageV3.computeStringSize(4, date_);
     }
     size += unknownFields.getSerializedSize();
     memoizedSize = size;
@@ -261,6 +284,8 @@ private static final long serialVersionUID = 0L;
     }
     generated.RideRequest other = (generated.RideRequest) obj;
 
+    if (getId()
+        != other.getId()) return false;
     if (hasSrcPoint() != other.hasSrcPoint()) return false;
     if (hasSrcPoint()) {
       if (!getSrcPoint()
@@ -284,6 +309,8 @@ private static final long serialVersionUID = 0L;
     }
     int hash = 41;
     hash = (19 * hash) + getDescriptor().hashCode();
+    hash = (37 * hash) + ID_FIELD_NUMBER;
+    hash = (53 * hash) + getId();
     if (hasSrcPoint()) {
       hash = (37 * hash) + SRCPOINT_FIELD_NUMBER;
       hash = (53 * hash) + getSrcPoint().hashCode();
@@ -427,6 +454,8 @@ private static final long serialVersionUID = 0L;
     @java.lang.Override
     public Builder clear() {
       super.clear();
+      id_ = 0;
+
       if (srcPointBuilder_ == null) {
         srcPoint_ = null;
       } else {
@@ -467,6 +496,7 @@ private static final long serialVersionUID = 0L;
     @java.lang.Override
     public generated.RideRequest buildPartial() {
       generated.RideRequest result = new generated.RideRequest(this);
+      result.id_ = id_;
       if (srcPointBuilder_ == null) {
         result.srcPoint_ = srcPoint_;
       } else {
@@ -526,6 +556,9 @@ private static final long serialVersionUID = 0L;
 
     public Builder mergeFrom(generated.RideRequest other) {
       if (other == generated.RideRequest.getDefaultInstance()) return this;
+      if (other.getId() != 0) {
+        setId(other.getId());
+      }
       if (other.hasSrcPoint()) {
         mergeSrcPoint(other.getSrcPoint());
       }
@@ -565,18 +598,49 @@ private static final long serialVersionUID = 0L;
       return this;
     }
 
+    private int id_ ;
+    /**
+     * <code>int32 id = 1;</code>
+     * @return The id.
+     */
+    @java.lang.Override
+    public int getId() {
+      return id_;
+    }
+    /**
+     * <code>int32 id = 1;</code>
+     * @param value The id to set.
+     * @return This builder for chaining.
+     */
+    public Builder setId(int value) {
+      
+      id_ = value;
+      onChanged();
+      return this;
+    }
+    /**
+     * <code>int32 id = 1;</code>
+     * @return This builder for chaining.
+     */
+    public Builder clearId() {
+      
+      id_ = 0;
+      onChanged();
+      return this;
+    }
+
     private generated.Point srcPoint_;
     private com.google.protobuf.SingleFieldBuilderV3<
         generated.Point, generated.Point.Builder, generated.PointOrBuilder> srcPointBuilder_;
     /**
-     * <code>.servercommunication.Point srcPoint = 1;</code>
+     * <code>.servercommunication.Point srcPoint = 2;</code>
      * @return Whether the srcPoint field is set.
      */
     public boolean hasSrcPoint() {
       return srcPointBuilder_ != null || srcPoint_ != null;
     }
     /**
-     * <code>.servercommunication.Point srcPoint = 1;</code>
+     * <code>.servercommunication.Point srcPoint = 2;</code>
      * @return The srcPoint.
      */
     public generated.Point getSrcPoint() {
@@ -587,7 +651,7 @@ private static final long serialVersionUID = 0L;
       }
     }
     /**
-     * <code>.servercommunication.Point srcPoint = 1;</code>
+     * <code>.servercommunication.Point srcPoint = 2;</code>
      */
     public Builder setSrcPoint(generated.Point value) {
       if (srcPointBuilder_ == null) {
@@ -603,7 +667,7 @@ private static final long serialVersionUID = 0L;
       return this;
     }
     /**
-     * <code>.servercommunication.Point srcPoint = 1;</code>
+     * <code>.servercommunication.Point srcPoint = 2;</code>
      */
     public Builder setSrcPoint(
         generated.Point.Builder builderForValue) {
@@ -617,7 +681,7 @@ private static final long serialVersionUID = 0L;
       return this;
     }
     /**
-     * <code>.servercommunication.Point srcPoint = 1;</code>
+     * <code>.servercommunication.Point srcPoint = 2;</code>
      */
     public Builder mergeSrcPoint(generated.Point value) {
       if (srcPointBuilder_ == null) {
@@ -635,7 +699,7 @@ private static final long serialVersionUID = 0L;
       return this;
     }
     /**
-     * <code>.servercommunication.Point srcPoint = 1;</code>
+     * <code>.servercommunication.Point srcPoint = 2;</code>
      */
     public Builder clearSrcPoint() {
       if (srcPointBuilder_ == null) {
@@ -649,7 +713,7 @@ private static final long serialVersionUID = 0L;
       return this;
     }
     /**
-     * <code>.servercommunication.Point srcPoint = 1;</code>
+     * <code>.servercommunication.Point srcPoint = 2;</code>
      */
     public generated.Point.Builder getSrcPointBuilder() {
       
@@ -657,7 +721,7 @@ private static final long serialVersionUID = 0L;
       return getSrcPointFieldBuilder().getBuilder();
     }
     /**
-     * <code>.servercommunication.Point srcPoint = 1;</code>
+     * <code>.servercommunication.Point srcPoint = 2;</code>
      */
     public generated.PointOrBuilder getSrcPointOrBuilder() {
       if (srcPointBuilder_ != null) {
@@ -668,7 +732,7 @@ private static final long serialVersionUID = 0L;
       }
     }
     /**
-     * <code>.servercommunication.Point srcPoint = 1;</code>
+     * <code>.servercommunication.Point srcPoint = 2;</code>
      */
     private com.google.protobuf.SingleFieldBuilderV3<
         generated.Point, generated.Point.Builder, generated.PointOrBuilder> 
@@ -688,14 +752,14 @@ private static final long serialVersionUID = 0L;
     private com.google.protobuf.SingleFieldBuilderV3<
         generated.Point, generated.Point.Builder, generated.PointOrBuilder> dstPointBuilder_;
     /**
-     * <code>.servercommunication.Point dstPoint = 2;</code>
+     * <code>.servercommunication.Point dstPoint = 3;</code>
      * @return Whether the dstPoint field is set.
      */
     public boolean hasDstPoint() {
       return dstPointBuilder_ != null || dstPoint_ != null;
     }
     /**
-     * <code>.servercommunication.Point dstPoint = 2;</code>
+     * <code>.servercommunication.Point dstPoint = 3;</code>
      * @return The dstPoint.
      */
     public generated.Point getDstPoint() {
@@ -706,7 +770,7 @@ private static final long serialVersionUID = 0L;
       }
     }
     /**
-     * <code>.servercommunication.Point dstPoint = 2;</code>
+     * <code>.servercommunication.Point dstPoint = 3;</code>
      */
     public Builder setDstPoint(generated.Point value) {
       if (dstPointBuilder_ == null) {
@@ -722,7 +786,7 @@ private static final long serialVersionUID = 0L;
       return this;
     }
     /**
-     * <code>.servercommunication.Point dstPoint = 2;</code>
+     * <code>.servercommunication.Point dstPoint = 3;</code>
      */
     public Builder setDstPoint(
         generated.Point.Builder builderForValue) {
@@ -736,7 +800,7 @@ private static final long serialVersionUID = 0L;
       return this;
     }
     /**
-     * <code>.servercommunication.Point dstPoint = 2;</code>
+     * <code>.servercommunication.Point dstPoint = 3;</code>
      */
     public Builder mergeDstPoint(generated.Point value) {
       if (dstPointBuilder_ == null) {
@@ -754,7 +818,7 @@ private static final long serialVersionUID = 0L;
       return this;
     }
     /**
-     * <code>.servercommunication.Point dstPoint = 2;</code>
+     * <code>.servercommunication.Point dstPoint = 3;</code>
      */
     public Builder clearDstPoint() {
       if (dstPointBuilder_ == null) {
@@ -768,7 +832,7 @@ private static final long serialVersionUID = 0L;
       return this;
     }
     /**
-     * <code>.servercommunication.Point dstPoint = 2;</code>
+     * <code>.servercommunication.Point dstPoint = 3;</code>
      */
     public generated.Point.Builder getDstPointBuilder() {
       
@@ -776,7 +840,7 @@ private static final long serialVersionUID = 0L;
       return getDstPointFieldBuilder().getBuilder();
     }
     /**
-     * <code>.servercommunication.Point dstPoint = 2;</code>
+     * <code>.servercommunication.Point dstPoint = 3;</code>
      */
     public generated.PointOrBuilder getDstPointOrBuilder() {
       if (dstPointBuilder_ != null) {
@@ -787,7 +851,7 @@ private static final long serialVersionUID = 0L;
       }
     }
     /**
-     * <code>.servercommunication.Point dstPoint = 2;</code>
+     * <code>.servercommunication.Point dstPoint = 3;</code>
      */
     private com.google.protobuf.SingleFieldBuilderV3<
         generated.Point, generated.Point.Builder, generated.PointOrBuilder> 
@@ -805,7 +869,7 @@ private static final long serialVersionUID = 0L;
 
     private java.lang.Object date_ = "";
     /**
-     * <code>string date = 3;</code>
+     * <code>string date = 4;</code>
      * @return The date.
      */
     public java.lang.String getDate() {
@@ -821,7 +885,7 @@ private static final long serialVersionUID = 0L;
       }
     }
     /**
-     * <code>string date = 3;</code>
+     * <code>string date = 4;</code>
      * @return The bytes for date.
      */
     public com.google.protobuf.ByteString
@@ -838,7 +902,7 @@ private static final long serialVersionUID = 0L;
       }
     }
     /**
-     * <code>string date = 3;</code>
+     * <code>string date = 4;</code>
      * @param value The date to set.
      * @return This builder for chaining.
      */
@@ -853,7 +917,7 @@ private static final long serialVersionUID = 0L;
       return this;
     }
     /**
-     * <code>string date = 3;</code>
+     * <code>string date = 4;</code>
      * @return This builder for chaining.
      */
     public Builder clearDate() {
@@ -863,7 +927,7 @@ private static final long serialVersionUID = 0L;
       return this;
     }
     /**
-     * <code>string date = 3;</code>
+     * <code>string date = 4;</code>
      * @param value The bytes for date to set.
      * @return This builder for chaining.
      */

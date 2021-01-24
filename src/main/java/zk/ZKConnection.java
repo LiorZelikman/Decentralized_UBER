@@ -2,6 +2,7 @@ package zk;
 
 import entities.Ride;
 import entities.RideOfferEntity;
+import generated.RideRequest;
 import org.apache.zookeeper.AddWatchMode;
 import org.apache.zookeeper.CreateMode;
 import org.apache.zookeeper.KeeperException;
@@ -21,8 +22,9 @@ public class ZKConnection {
     private ZooKeeper zkClient;
     private ZookeeperWatcher watcher;
     private Integer port;
-    public final
-    String serverID;
+    public final String serverID;
+    private ConcurrentHashMap<Integer, Ride> rides;
+    private ConcurrentHashMap<Integer, RideOfferEntity> rideOffers;
 
 
     public ZKConnection(Integer port, ConcurrentHashMap<Integer, Ride> rides, ConcurrentHashMap<Integer, RideOfferEntity> rideOffers) throws IOException,
@@ -32,6 +34,8 @@ public class ZKConnection {
         watcher.setFields(zkClient, port, rides, rideOffers);
         this.port = port;
         serverID = "" + port%10;
+        this.rideOffers = rideOffers;
+        this.rides = rides;
 
         createNode("/add_operation", "");
         createNode("/assign_operation", "");
@@ -63,14 +67,20 @@ public class ZKConnection {
         }
     }
 
-    public void assign(Integer rideID, Integer requestID){
+    public void assign(Integer rideID, RideRequest rideRequest){
         try{
+            RideOfferEntity offerEntity = new RideOfferEntity(rideRequest);
             long timestamp = System.currentTimeMillis();
-            createNode("/assigned_" + timestamp, rideID + ";" + requestID);
+            createNode("/assigned_" + timestamp, rideID + ";" + offerEntity.toCustomString());
             for(int i = 0; i < RidesService.servers_per_city; i++){
-                createNode("/assigned_" + timestamp + "/" + (i + 1), rideID + ";" + requestID);
+                createNode("/assigned_" + timestamp + "/" + (i + 1), rideID + ";" + offerEntity.getRequestId() + offerEntity.toCustomString());
             }
             zkClient.setData("/assign_operation", String.valueOf(timestamp).getBytes(), -1);
+            while(rideOffers.get(offerEntity.getRequestId()) == null){
+                System.out.println(port + ": waiting");
+                Thread.sleep(1000);
+            }
+            System.out.println(port + ": done waiting");
         }
         catch (Exception e){
             System.out.println(e.getMessage());

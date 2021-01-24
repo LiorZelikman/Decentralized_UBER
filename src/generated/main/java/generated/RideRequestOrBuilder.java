@@ -8,42 +8,48 @@ public interface RideRequestOrBuilder extends
     com.google.protobuf.MessageOrBuilder {
 
   /**
-   * <code>.servercommunication.Point srcPoint = 1;</code>
+   * <code>int32 id = 1;</code>
+   * @return The id.
+   */
+  int getId();
+
+  /**
+   * <code>.servercommunication.Point srcPoint = 2;</code>
    * @return Whether the srcPoint field is set.
    */
   boolean hasSrcPoint();
   /**
-   * <code>.servercommunication.Point srcPoint = 1;</code>
+   * <code>.servercommunication.Point srcPoint = 2;</code>
    * @return The srcPoint.
    */
   generated.Point getSrcPoint();
   /**
-   * <code>.servercommunication.Point srcPoint = 1;</code>
+   * <code>.servercommunication.Point srcPoint = 2;</code>
    */
   generated.PointOrBuilder getSrcPointOrBuilder();
 
   /**
-   * <code>.servercommunication.Point dstPoint = 2;</code>
+   * <code>.servercommunication.Point dstPoint = 3;</code>
    * @return Whether the dstPoint field is set.
    */
   boolean hasDstPoint();
   /**
-   * <code>.servercommunication.Point dstPoint = 2;</code>
+   * <code>.servercommunication.Point dstPoint = 3;</code>
    * @return The dstPoint.
    */
   generated.Point getDstPoint();
   /**
-   * <code>.servercommunication.Point dstPoint = 2;</code>
+   * <code>.servercommunication.Point dstPoint = 3;</code>
    */
   generated.PointOrBuilder getDstPointOrBuilder();
 
   /**
-   * <code>string date = 3;</code>
+   * <code>string date = 4;</code>
    * @return The date.
    */
   java.lang.String getDate();
   /**
-   * <code>string date = 3;</code>
+   * <code>string date = 4;</code>
    * @return The bytes for date.
    */
   com.google.protobuf.ByteString
