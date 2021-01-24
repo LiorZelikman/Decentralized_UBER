@@ -65,15 +65,16 @@ public class ZookeeperWatcher implements Watcher {
                 String megaPathToDelete = "/added_" + timestamp;
                 String pathToDelete = megaPathToDelete + "/" + serverID;
                 String data = getZNodeData(megaPathToDelete);
-                String[] fields = data.split(";");
-                Integer year = Integer.valueOf(fields[8].split("-")[0]);
-                Integer mon = Integer.valueOf(fields[8].split("-")[1]);
-                Integer day = Integer.valueOf(fields[8].split("-")[2]);
-                Ride newRide = new Ride(Integer.valueOf(fields[0]), fields[1], fields[2], fields[3],
-                        new Point2D.Double(Double.valueOf(fields[4]), Double.valueOf(fields[5])),
-                        new Point2D.Double(Double.valueOf(fields[6]), Double.valueOf(fields[7])),
-                        LocalDate.of(year, mon, day),
-                        Integer.valueOf(fields[9]), Double.valueOf(fields[10]));
+                Ride newRide = new Ride(data);
+//                String[] fields = data.split(";");
+//                Integer year = Integer.valueOf(fields[8].split("-")[0]);
+//                Integer mon = Integer.valueOf(fields[8].split("-")[1]);
+//                Integer day = Integer.valueOf(fields[8].split("-")[2]);
+//                Ride newRide = new Ride(Integer.valueOf(fields[0]), fields[1], fields[2], fields[3],
+//                        new Point2D.Double(Double.valueOf(fields[4]), Double.valueOf(fields[5])),
+//                        new Point2D.Double(Double.valueOf(fields[6]), Double.valueOf(fields[7])),
+//                        LocalDate.of(year, mon, day),
+//                        Integer.valueOf(fields[9]), Double.valueOf(fields[10]));
                 rides.put(newRide.getRide_id(), newRide);
                 zkClient.delete(pathToDelete, -1);
                 clearNodes(megaPathToDelete);

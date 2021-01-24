@@ -22,6 +22,7 @@ public class Ride {
     private Point2D.Double ending_pos;
     private LocalDate departure_Date;
     private Integer vacancies;
+    private Integer orig_vacancies;
     private Double PD;
 
     protected Ride(){}
@@ -35,6 +36,7 @@ public class Ride {
         this.ending_pos = ride.ending_pos;
         this.departure_Date = ride.departure_Date;
         this.vacancies = ride.vacancies;
+        this.orig_vacancies = ride.vacancies;
         this.PD = ride.PD;
     }
 
@@ -47,7 +49,25 @@ public class Ride {
         this.ending_pos = ending_pos;
         this.departure_Date = departure_Date;
         this.vacancies = vacancies;
+        this.orig_vacancies = vacancies;
         this.PD = PD;
+    }
+
+    public Ride(String description){
+        String[] fields = description.split(";");
+        Integer year = Integer.valueOf(fields[8].split("-")[0]);
+        Integer mon = Integer.valueOf(fields[8].split("-")[1]);
+        Integer day = Integer.valueOf(fields[8].split("-")[2]);
+        this.ride_id = Integer.valueOf(fields[0]);
+        this.first_name = fields[1];
+        this.last_name = fields[2];
+        this.phone_number = fields[3];
+        this.starting_pos = new Point2D.Double(Double.valueOf(fields[4]), Double.valueOf(fields[5]));
+        this.ending_pos = new Point2D.Double(Double.valueOf(fields[6]), Double.valueOf(fields[7]));
+        this.departure_Date = LocalDate.of(year, mon, day);
+        this.vacancies = Integer.valueOf(fields[9]);
+        this.orig_vacancies = this.vacancies;
+        this.PD = Double.valueOf(fields[10]);
     }
 
     public Integer getRide_id() {
@@ -104,6 +124,14 @@ public class Ride {
 
     public void setVacancies(Integer vacancies) {
         this.vacancies = vacancies;
+    }
+
+    public Integer getOrig_vacancies() {
+        return orig_vacancies;
+    }
+
+    public void setOrig_vacancies(Integer orig_vacancies) {
+        this.orig_vacancies = orig_vacancies;
     }
 
     public LocalDate getDeparture_Date() {

@@ -49,6 +49,8 @@ public class RidesService{
     private static final Map<Point2D.Double, ArrayList<Integer>> city_to_grpc_port;
 
     public static final Integer servers_per_city = 3;
+    public static final Integer number_of_cities = 3;
+
     //private static final Map<Point2D.Double, ArrayList<ServerCommunicationGrpc.ServerCommunicationBlockingStub>> blockingStubs;
 
     //private static final ServerCommunicationGrpc.ServerCommunicationStub hastub;
@@ -141,16 +143,16 @@ public class RidesService{
             if(ride.doesRideMatch(req)){
                 RideOffer offer = assignRide(rides, ride.getRide_id());
                 if(offer != null){
-                    return new RideOfferEntity(offer);
+                    return new RideOfferEntity(offer, req);
                 }
             }
         }
         RideOffer grpcRideOffer = grpcClient.hasCompatibleRide(req);
         if(grpcRideOffer == null){
-            return new RideOfferEntity("Could not find ride", "", "", 8);
+            return new RideOfferEntity("Could not find ride", "", "", 8, req);
         }
 
-        return new RideOfferEntity(grpcRideOffer);
+        return new RideOfferEntity(grpcRideOffer, req);
     }
 
 

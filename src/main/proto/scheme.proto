@@ -55,7 +55,13 @@ message RideOffer {
   int32 id = 4;
 }
 
+message RideSnapshot{
+  string description = 1;
+}
 
+message RideRequestSnapshot{
+  string description = 1;
+}
 
 /*
 // A latitude-longitude rectangle, represented as two diagonally opposite

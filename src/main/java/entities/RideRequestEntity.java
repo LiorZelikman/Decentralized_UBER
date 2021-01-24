@@ -27,6 +27,17 @@ public class RideRequestEntity {
         this.departureDate = departureDate;
     }
 
+    public RideRequestEntity(RideRequest req){
+        this.srcPoint = new Point2D.Double(req.getSrcPoint().getX(), req.getSrcPoint().getY());
+        this.dstPoint = new Point2D.Double(req.getDstPoint().getX(), req.getDstPoint().getY());
+        String[] date = req.getDate().split("-");
+        Integer year = Integer.valueOf(date[0]);
+        Integer mon = Integer.valueOf(date[1]);
+        Integer day = Integer.valueOf(date[2]);
+        this.departureDate = LocalDate.of(year, mon, day);
+
+    }
+
     public Point2D.Double getSrcPoint() {
         return srcPoint;
     }

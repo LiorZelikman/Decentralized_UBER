@@ -29,6 +29,16 @@ public final class RouteGuideProto {
   static final 
     com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
       internal_static_servercommunication_RideOffer_fieldAccessorTable;
+  static final com.google.protobuf.Descriptors.Descriptor
+    internal_static_servercommunication_RideSnapshot_descriptor;
+  static final 
+    com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
+      internal_static_servercommunication_RideSnapshot_fieldAccessorTable;
+  static final com.google.protobuf.Descriptors.Descriptor
+    internal_static_servercommunication_RideRequestSnapshot_descriptor;
+  static final 
+    com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
+      internal_static_servercommunication_RideRequestSnapshot_fieldAccessorTable;
 
   public static com.google.protobuf.Descriptors.FileDescriptor
       getDescriptor() {
@@ -44,13 +54,15 @@ public final class RouteGuideProto {
       "n.Point\022,\n\010dstPoint\030\002 \001(\0132\032.servercommun" +
       "ication.Point\022\014\n\004date\030\003 \001(\t\"K\n\tRideOffer" +
       "\022\021\n\tfirstName\030\001 \001(\t\022\020\n\010lastName\030\002 \001(\t\022\r\n" +
-      "\005phone\030\003 \001(\t\022\n\n\002id\030\004 \001(\0052\276\001\n\023ServerCommu" +
-      "nication\022W\n\021hasCompatibleRide\022 .serverco" +
-      "mmunication.RideRequest\032\036.servercommunic" +
-      "ation.RideOffer\"\000\022N\n\noccupyRide\022\036.server" +
-      "communication.RideOffer\032\036.servercommunic" +
-      "ation.RideOffer\"\000B$\n\tgeneratedB\017RouteGui" +
-      "deProtoP\001\242\002\003RTGb\006proto3"
+      "\005phone\030\003 \001(\t\022\n\n\002id\030\004 \001(\005\"#\n\014RideSnapshot" +
+      "\022\023\n\013description\030\001 \001(\t\"*\n\023RideRequestSnap" +
+      "shot\022\023\n\013description\030\001 \001(\t2\276\001\n\023ServerComm" +
+      "unication\022W\n\021hasCompatibleRide\022 .serverc" +
+      "ommunication.RideRequest\032\036.servercommuni" +
+      "cation.RideOffer\"\000\022N\n\noccupyRide\022\036.serve" +
+      "rcommunication.RideOffer\032\036.servercommuni" +
+      "cation.RideOffer\"\000B$\n\tgeneratedB\017RouteGu" +
+      "ideProtoP\001\242\002\003RTGb\006proto3"
     };
     descriptor = com.google.protobuf.Descriptors.FileDescriptor
       .internalBuildGeneratedFileFrom(descriptorData,
@@ -74,6 +86,18 @@ public final class RouteGuideProto {
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_servercommunication_RideOffer_descriptor,
         new java.lang.String[] { "FirstName", "LastName", "Phone", "Id", });
+    internal_static_servercommunication_RideSnapshot_descriptor =
+      getDescriptor().getMessageTypes().get(3);
+    internal_static_servercommunication_RideSnapshot_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
+        internal_static_servercommunication_RideSnapshot_descriptor,
+        new java.lang.String[] { "Description", });
+    internal_static_servercommunication_RideRequestSnapshot_descriptor =
+      getDescriptor().getMessageTypes().get(4);
+    internal_static_servercommunication_RideRequestSnapshot_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
+        internal_static_servercommunication_RideRequestSnapshot_descriptor,
+        new java.lang.String[] { "Description", });
   }
 
   // @@protoc_insertion_point(outer_class_scope)
