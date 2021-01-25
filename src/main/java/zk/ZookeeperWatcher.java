@@ -103,7 +103,7 @@ public class ZookeeperWatcher implements Watcher {
                             Ride newRide = new Ride(ride);
                             newRide.setVacancies(newVacancies);
                             rides.replace(rideID, ride, newRide);
-                            RideOfferEntity newRideOffer = new RideOfferEntity(newRide.toRideOffer(), rideOfferEntity.toRideRequest());
+                            RideOfferEntity newRideOffer = new RideOfferEntity(newRide.toRideOffer(rideOfferEntity.toRideRequest()));
                             rideOffers.put(requestID, newRideOffer);
                         }
                     }
@@ -122,13 +122,15 @@ public class ZookeeperWatcher implements Watcher {
 
                 Integer rideID = rideOfferEntity.getOfferId();
                 Ride ride = rides.get(rideID);
-                Integer newVacancies = ride.getVacancies() + 1;
-                Ride newRide = new Ride(ride);
-                newRide.setVacancies(newVacancies);
-                rides.replace(rideID, ride, newRide);
+                if(ride != null) {
+                    Integer newVacancies = ride.getVacancies() + 1;
+                    Ride newRide = new Ride(ride);
+                    newRide.setVacancies(newVacancies);
+                    rides.replace(rideID, ride, newRide);
 
-                RideOfferEntity newRideOffer = new RideOfferEntity(rideOfferEntity.toRideRequest());
-                rideOffers.replace(requestId, rideOfferEntity, newRideOffer);
+                    RideOfferEntity newRideOffer = new RideOfferEntity(rideOfferEntity.toRideRequest());
+                    rideOffers.replace(requestId, rideOfferEntity, newRideOffer);
+                }
                 zkClient.delete(pathToDelete, -1);
                 clearNodes(megaPathToDelete);
 

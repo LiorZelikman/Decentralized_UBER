@@ -61,6 +61,7 @@ message RideOffer {
   string lastName = 3;
   string phone = 4;
   bool satisfied = 5;
+  RideRequest req = 6;
 }
 
 message RideSnapshot{

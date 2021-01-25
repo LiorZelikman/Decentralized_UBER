@@ -146,7 +146,7 @@ public class RidesService{
             return Pair.of(myGrpcPort, new RideOfferEntity(req));
         }
 
-        return Pair.of(myGrpcPort, new RideOfferEntity(grpcRideOffer.getSecond(), req));
+        return Pair.of(grpcRideOffer.getFirst(), new RideOfferEntity(grpcRideOffer.getSecond()));
     }
 
 

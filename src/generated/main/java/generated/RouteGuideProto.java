@@ -53,23 +53,24 @@ public final class RouteGuideProto {
       "st\022\n\n\002id\030\001 \001(\005\022,\n\010srcPoint\030\002 \001(\0132\032.serve" +
       "rcommunication.Point\022,\n\010dstPoint\030\003 \001(\0132\032" +
       ".servercommunication.Point\022\014\n\004date\030\004 \001(\t" +
-      "\"^\n\tRideOffer\022\n\n\002id\030\001 \001(\005\022\021\n\tfirstName\030\002" +
-      " \001(\t\022\020\n\010lastName\030\003 \001(\t\022\r\n\005phone\030\004 \001(\t\022\021\n" +
-      "\tsatisfied\030\005 \001(\010\"#\n\014RideSnapshot\022\023\n\013desc" +
-      "ription\030\001 \001(\t\"(\n\021RideOfferSnapshot\022\023\n\013de" +
-      "scription\030\001 \001(\t2\262\003\n\023ServerCommunication\022" +
-      "W\n\021hasCompatibleRide\022 .servercommunicati" +
-      "on.RideRequest\032\036.servercommunication.Rid" +
-      "eOffer\"\000\022N\n\noccupyRide\022\036.servercommunica" +
-      "tion.RideOffer\032\036.servercommunication.Rid" +
-      "eOffer\"\000\022M\n\010getRides\022\032.servercommunicati" +
-      "on.Point\032!.servercommunication.RideSnaps" +
-      "hot\"\0000\001\022W\n\rgetRideOffers\022\032.servercommuni" +
-      "cation.Point\032&.servercommunication.RideO" +
-      "fferSnapshot\"\0000\001\022J\n\010unassign\022 .servercom" +
-      "munication.RideRequest\032\032.servercommunica" +
-      "tion.Point\"\000B$\n\tgeneratedB\017RouteGuidePro" +
-      "toP\001\242\002\003RTGb\006proto3"
+      "\"\215\001\n\tRideOffer\022\n\n\002id\030\001 \001(\005\022\021\n\tfirstName\030" +
+      "\002 \001(\t\022\020\n\010lastName\030\003 \001(\t\022\r\n\005phone\030\004 \001(\t\022\021" +
+      "\n\tsatisfied\030\005 \001(\010\022-\n\003req\030\006 \001(\0132 .serverc" +
+      "ommunication.RideRequest\"#\n\014RideSnapshot" +
+      "\022\023\n\013description\030\001 \001(\t\"(\n\021RideOfferSnapsh" +
+      "ot\022\023\n\013description\030\001 \001(\t2\262\003\n\023ServerCommun" +
+      "ication\022W\n\021hasCompatibleRide\022 .servercom" +
+      "munication.RideRequest\032\036.servercommunica" +
+      "tion.RideOffer\"\000\022N\n\noccupyRide\022\036.serverc" +
+      "ommunication.RideOffer\032\036.servercommunica" +
+      "tion.RideOffer\"\000\022M\n\010getRides\022\032.servercom" +
+      "munication.Point\032!.servercommunication.R" +
+      "ideSnapshot\"\0000\001\022W\n\rgetRideOffers\022\032.serve" +
+      "rcommunication.Point\032&.servercommunicati" +
+      "on.RideOfferSnapshot\"\0000\001\022J\n\010unassign\022 .s" +
+      "ervercommunication.RideRequest\032\032.serverc" +
+      "ommunication.Point\"\000B$\n\tgeneratedB\017Route" +
+      "GuideProtoP\001\242\002\003RTGb\006proto3"
     };
     descriptor = com.google.protobuf.Descriptors.FileDescriptor
       .internalBuildGeneratedFileFrom(descriptorData,
@@ -92,7 +93,7 @@ public final class RouteGuideProto {
     internal_static_servercommunication_RideOffer_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_servercommunication_RideOffer_descriptor,
-        new java.lang.String[] { "Id", "FirstName", "LastName", "Phone", "Satisfied", });
+        new java.lang.String[] { "Id", "FirstName", "LastName", "Phone", "Satisfied", "Req", });
     internal_static_servercommunication_RideSnapshot_descriptor =
       getDescriptor().getMessageTypes().get(3);
     internal_static_servercommunication_RideSnapshot_fieldAccessorTable = new

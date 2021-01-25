@@ -54,4 +54,19 @@ public interface RideOfferOrBuilder extends
    * @return The satisfied.
    */
   boolean getSatisfied();
+
+  /**
+   * <code>.servercommunication.RideRequest req = 6;</code>
+   * @return Whether the req field is set.
+   */
+  boolean hasReq();
+  /**
+   * <code>.servercommunication.RideRequest req = 6;</code>
+   * @return The req.
+   */
+  generated.RideRequest getReq();
+  /**
+   * <code>.servercommunication.RideRequest req = 6;</code>
+   */
+  generated.RideRequestOrBuilder getReqOrBuilder();
 }

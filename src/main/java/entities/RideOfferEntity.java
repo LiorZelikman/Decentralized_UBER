@@ -33,8 +33,8 @@ public class RideOfferEntity extends RideRequestEntity {
         this.offerId = offerID;
     }
 
-    public RideOfferEntity(RideOffer offer, RideRequest req){
-        this(offer.getFirstName(), offer.getLastName(), offer.getPhone(), offer.getSatisfied(), offer.getId(), req);
+    public RideOfferEntity(RideOffer offer){
+        this(offer.getFirstName(), offer.getLastName(), offer.getPhone(), offer.getSatisfied(), offer.getId(), offer.getReq());
     }
 
     public RideOfferEntity(RideRequest req){
@@ -49,8 +49,13 @@ public class RideOfferEntity extends RideRequestEntity {
         this.lastName = fields[2];
         this.phone = fields[3];
         this.satisfied = Boolean.parseBoolean(fields[4]);
-
     }
+
+
+
+    /*public RideOfferEntity(RideOffer offer){
+
+    }*/
 
     public Integer getOfferId() {
         return offerId;
@@ -95,6 +100,11 @@ public class RideOfferEntity extends RideRequestEntity {
 
     public String toCustomString(){
         return "" + this.offerId + ";" + this.firstName + ";" + this.lastName + ";" + this.phone + ";" + this.satisfied + ";" + super.getCustomString();
+    }
+
+    public RideOffer toRideOffer(){
+        return RideOffer.newBuilder().setReq(this.toRideRequest()).setId(this.getOfferId()).setFirstName(this.firstName).setLastName(this.lastName)
+                .setPhone(this.getPhone()).setSatisfied(this.isSatisfied()).build();
     }
 
 }

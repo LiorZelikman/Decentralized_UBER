@@ -182,9 +182,9 @@ public class Ride {
         }
     }
 
-    public RideOffer toRideOffer(){
+    public RideOffer toRideOffer(RideRequest request){
         return RideOffer.newBuilder().setFirstName(this.getFirst_name())
-                .setLastName(this.getLast_name()).setPhone(this.getPhone_number()).setId(this.getRide_id()).setSatisfied(true).build();
+                .setLastName(this.getLast_name()).setPhone(this.getPhone_number()).setId(this.getRide_id()).setSatisfied(true).setReq(request).build();
     }
 
 

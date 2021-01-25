@@ -28,6 +28,7 @@ public class GRPCService extends ServerCommunicationGrpc.ServerCommunicationImpl
 
     @Override
     public void hasCompatibleRide(RideRequest rideRequest, StreamObserver<RideOffer> responseObserver){
+        boolean successful = false;
         for(Ride currentRide : rides.values()){
             if(currentRide.doesRideMatch(rideRequest)){
                 RideRequestEntity rideRequestEntity = new RideRequestEntity(rideRequest);
@@ -41,7 +42,8 @@ public class GRPCService extends ServerCommunicationGrpc.ServerCommunicationImpl
                 RideOfferEntity offer = rideOffers.get(rideRequestEntity.getRequestId());
                 //RideOffer offer = assignRide(rides, ride.getRide_id());
                 if(offer.isSatisfied()){
-                    responseObserver.onNext(currentRide.toRideOffer());
+                    responseObserver.onNext(offer.toRideOffer());
+                    successful = true;
                     break;
                 }
                 /*
@@ -50,6 +52,9 @@ public class GRPCService extends ServerCommunicationGrpc.ServerCommunicationImpl
                     break;
                 }*/
             }
+        }
+        if(!successful) {
+            responseObserver.onNext(RideOffer.newBuilder().setSatisfied(false).build());
         }
         responseObserver.onCompleted();
     }
