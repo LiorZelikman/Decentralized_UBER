@@ -35,12 +35,14 @@ public class GRPCClient {
                 ServerCommunicationGrpc.ServerCommunicationBlockingStub newStub = ServerCommunicationGrpc.newBlockingStub(newChannel);
                 try {
                     RideOffer offer = newStub.hasCompatibleRide(req);
-                    if (offer.getPhone().equals("")) {
+                    if (!offer.getSatisfied()) {
                         break;
                     } else {
                         return Pair.of(port, offer);
                     }
-                } catch(Exception e){ }
+                } catch(Exception e){
+                    System.out.println("hasCompatibleRide - exception");
+                }
             }
 
         }
@@ -88,6 +90,31 @@ public class GRPCClient {
             }
         }
         return allRideOffers;
+    }
+
+    public void unassign(Integer port, Integer requestId){
+        for (Integer currPort : getPortsByPort(port)) {
+            Channel newChannel = ManagedChannelBuilder.
+                    forAddress("127.0.0.1", currPort)
+                    .usePlaintext().build();
+            ServerCommunicationGrpc.ServerCommunicationBlockingStub newStub = ServerCommunicationGrpc.newBlockingStub(newChannel);
+            try {
+                newStub.unassign(RideRequest.newBuilder().setId(requestId).build());
+                break;
+            } catch (Exception e) {
+            }
+        }
+    }
+
+    private ArrayList<Integer> getPortsByPort(Integer port){
+        for(ArrayList<Integer> ports : city_to_grpc_port.values()){
+            if(ports.contains(port)){
+                return ports;
+            }
+        }
+        ArrayList<Integer> result = new ArrayList<>();
+        result.add(port);
+        return result;
     }
 
 }

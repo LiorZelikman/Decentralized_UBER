@@ -21,6 +21,7 @@ import org.springframework.stereotype.Component;
 import zk.ZKConnection;
 import zk.ZookeeperWatcher;
 
+import javax.persistence.criteria.CriteriaBuilder;
 import java.awt.geom.Point2D;
 import java.io.IOException;
 import java.time.LocalDate;
@@ -79,9 +80,9 @@ public class RidesService{
         grpcClient = new GRPCClient();
         rides = new ConcurrentHashMap<>();
         rideOffers = new ConcurrentHashMap<>();
-        rides.put(0, new Ride(0, "Jhony", "Walker", "0550770077",
+        /*rides.put(0, new Ride(0, "Jhony", "Walker", "0550770077",
                 new Point2D.Double(0.0, 0.0), new Point2D.Double(2.0, 2.0),
-                LocalDate.now(), 2, 2.0));
+                LocalDate.now(), 2, 2.0));*/
     }
 
     public void setPort(Integer port) throws IOException {
@@ -122,7 +123,7 @@ public class RidesService{
     }
 
 
-    public Pair<Integer, RideOfferEntity> requestRide(RideRequestEntity reqEntity) throws KeeperException, InterruptedException {
+    public Pair<Integer, RideOfferEntity> requestRide(RideRequestEntity reqEntity, boolean saveDummy) throws KeeperException, InterruptedException {
         reqEntity.setRequestId(zooKeeper.supplyID());
         RideRequest req = reqEntity.toRideRequest();
         //rideOffers.put(reqEntity.getRequestId(), new RideOfferEntity(req));
@@ -139,7 +140,9 @@ public class RidesService{
         }
         Pair<Integer, RideOffer> grpcRideOffer = grpcClient.hasCompatibleRide(req);
         if(grpcRideOffer == null){
-            zooKeeper.assign(-1, req);
+            if(saveDummy) {
+                zooKeeper.assign(-1, req);
+            }
             return Pair.of(myGrpcPort, new RideOfferEntity(req));
         }
 
@@ -150,16 +153,19 @@ public class RidesService{
     public List<RideOfferEntity> planPath(List<RideRequestEntity> pathRequest) throws KeeperException, InterruptedException {
         List<Pair<Integer, RideOfferEntity>> offers = new ArrayList<>();
         for(RideRequestEntity reqEntity : pathRequest){
-            if(requestRide(reqEntity).getSecond().isSatisfied()) {
-                offers.add(requestRide(reqEntity));
+            Pair<Integer, RideOfferEntity> offerToAdd = requestRide(reqEntity, false);
+            if(offerToAdd.getSecond().isSatisfied()) {
+                offers.add(offerToAdd);
             } else {
                 for (Pair<Integer, RideOfferEntity> offer: offers) {
                     //call de-assign
-                    if(offer.getFirst().equals(myGrpcPort)){
-                        zooKeeper.unassign(offer.getFirst(), offer.getSecond());
+                    Integer port = offer.getFirst();
+                    Integer requestId = offer.getSecond().getRequestId();
+                    if(port.equals(myGrpcPort)){
+                        zooKeeper.unassign(requestId);
                     }
                     else {
-
+                        grpcClient.unassign(port, requestId);
                     }
                 }
                 return null;

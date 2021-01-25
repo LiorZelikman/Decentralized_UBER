@@ -154,6 +154,37 @@ public final class ServerCommunicationGrpc {
     return getGetRideOffersMethod;
   }
 
+  private static volatile io.grpc.MethodDescriptor<generated.RideRequest,
+      generated.Point> getUnassignMethod;
+
+  @io.grpc.stub.annotations.RpcMethod(
+      fullMethodName = SERVICE_NAME + '/' + "unassign",
+      requestType = generated.RideRequest.class,
+      responseType = generated.Point.class,
+      methodType = io.grpc.MethodDescriptor.MethodType.UNARY)
+  public static io.grpc.MethodDescriptor<generated.RideRequest,
+      generated.Point> getUnassignMethod() {
+    io.grpc.MethodDescriptor<generated.RideRequest, generated.Point> getUnassignMethod;
+    if ((getUnassignMethod = ServerCommunicationGrpc.getUnassignMethod) == null) {
+      synchronized (ServerCommunicationGrpc.class) {
+        if ((getUnassignMethod = ServerCommunicationGrpc.getUnassignMethod) == null) {
+          ServerCommunicationGrpc.getUnassignMethod = getUnassignMethod =
+              io.grpc.MethodDescriptor.<generated.RideRequest, generated.Point>newBuilder()
+              .setType(io.grpc.MethodDescriptor.MethodType.UNARY)
+              .setFullMethodName(generateFullMethodName(SERVICE_NAME, "unassign"))
+              .setSampledToLocalTracing(true)
+              .setRequestMarshaller(io.grpc.protobuf.ProtoUtils.marshaller(
+                  generated.RideRequest.getDefaultInstance()))
+              .setResponseMarshaller(io.grpc.protobuf.ProtoUtils.marshaller(
+                  generated.Point.getDefaultInstance()))
+              .setSchemaDescriptor(new ServerCommunicationMethodDescriptorSupplier("unassign"))
+              .build();
+        }
+      }
+    }
+    return getUnassignMethod;
+  }
+
   /**
    * Creates a new async stub that supports all call types for the service
    */
@@ -245,6 +276,13 @@ public final class ServerCommunicationGrpc {
       asyncUnimplementedUnaryCall(getGetRideOffersMethod(), responseObserver);
     }
 
+    /**
+     */
+    public void unassign(generated.RideRequest request,
+        io.grpc.stub.StreamObserver<generated.Point> responseObserver) {
+      asyncUnimplementedUnaryCall(getUnassignMethod(), responseObserver);
+    }
+
     @java.lang.Override public final io.grpc.ServerServiceDefinition bindService() {
       return io.grpc.ServerServiceDefinition.builder(getServiceDescriptor())
           .addMethod(
@@ -275,6 +313,13 @@ public final class ServerCommunicationGrpc {
                 generated.Point,
                 generated.RideOfferSnapshot>(
                   this, METHODID_GET_RIDE_OFFERS)))
+          .addMethod(
+            getUnassignMethod(),
+            asyncUnaryCall(
+              new MethodHandlers<
+                generated.RideRequest,
+                generated.Point>(
+                  this, METHODID_UNASSIGN)))
           .build();
     }
   }
@@ -339,6 +384,14 @@ public final class ServerCommunicationGrpc {
       asyncServerStreamingCall(
           getChannel().newCall(getGetRideOffersMethod(), getCallOptions()), request, responseObserver);
     }
+
+    /**
+     */
+    public void unassign(generated.RideRequest request,
+        io.grpc.stub.StreamObserver<generated.Point> responseObserver) {
+      asyncUnaryCall(
+          getChannel().newCall(getUnassignMethod(), getCallOptions()), request, responseObserver);
+    }
   }
 
   /**
@@ -399,6 +452,13 @@ public final class ServerCommunicationGrpc {
       return blockingServerStreamingCall(
           getChannel(), getGetRideOffersMethod(), getCallOptions(), request);
     }
+
+    /**
+     */
+    public generated.Point unassign(generated.RideRequest request) {
+      return blockingUnaryCall(
+          getChannel(), getUnassignMethod(), getCallOptions(), request);
+    }
   }
 
   /**
@@ -445,12 +505,21 @@ public final class ServerCommunicationGrpc {
       return futureUnaryCall(
           getChannel().newCall(getOccupyRideMethod(), getCallOptions()), request);
     }
+
+    /**
+     */
+    public com.google.common.util.concurrent.ListenableFuture<generated.Point> unassign(
+        generated.RideRequest request) {
+      return futureUnaryCall(
+          getChannel().newCall(getUnassignMethod(), getCallOptions()), request);
+    }
   }
 
   private static final int METHODID_HAS_COMPATIBLE_RIDE = 0;
   private static final int METHODID_OCCUPY_RIDE = 1;
   private static final int METHODID_GET_RIDES = 2;
   private static final int METHODID_GET_RIDE_OFFERS = 3;
+  private static final int METHODID_UNASSIGN = 4;
 
   private static final class MethodHandlers<Req, Resp> implements
       io.grpc.stub.ServerCalls.UnaryMethod<Req, Resp>,
@@ -484,6 +553,10 @@ public final class ServerCommunicationGrpc {
         case METHODID_GET_RIDE_OFFERS:
           serviceImpl.getRideOffers((generated.Point) request,
               (io.grpc.stub.StreamObserver<generated.RideOfferSnapshot>) responseObserver);
+          break;
+        case METHODID_UNASSIGN:
+          serviceImpl.unassign((generated.RideRequest) request,
+              (io.grpc.stub.StreamObserver<generated.Point>) responseObserver);
           break;
         default:
           throw new AssertionError();
@@ -550,6 +623,7 @@ public final class ServerCommunicationGrpc {
               .addMethod(getOccupyRideMethod())
               .addMethod(getGetRidesMethod())
               .addMethod(getGetRideOffersMethod())
+              .addMethod(getUnassignMethod())
               .build();
         }
       }

@@ -39,6 +39,7 @@ public class ZKConnection {
 
         createNode("/add_operation", "");
         createNode("/assign_operation", "");
+        createNode("/unassign_operation", "");
         createNode("/ID", "1");
         try {
             zkClient.addWatch("/add_operation", watcher, AddWatchMode.PERSISTENT);
@@ -108,12 +109,12 @@ public class ZKConnection {
         }
     }
 
-    public void unassign(Integer port, RideOfferEntity offerEntity){
+    public void unassign(Integer requestId){
         try{
             long timestamp = System.currentTimeMillis();
-            createNode("/unassigned_" + timestamp, offerEntity.toCustomString());
+            createNode("/unassigned_" + timestamp, requestId.toString());
             for(int i = 0; i < RidesService.servers_per_city; i++){
-                createNode("/unassigned_" + timestamp + "/" + (i + 1), offerEntity.toCustomString());
+                createNode("/unassigned_" + timestamp + "/" + (i + 1), requestId.toString());
             }
             zkClient.setData("/unassign_operation", String.valueOf(timestamp).getBytes(), -1);
         }

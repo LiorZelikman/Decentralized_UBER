@@ -47,7 +47,7 @@ public class RideController implements ApplicationListener<ServletWebServerIniti
 
     @PostMapping(path  = "/rideRequest")
     RideOfferEntity requestRide(@RequestBody RideRequestEntity req) throws KeeperException, InterruptedException {
-        return service.requestRide(req).getSecond();
+        return service.requestRide(req, true).getSecond();
     }
 
     @GetMapping(path = "/rides")

@@ -70,4 +70,10 @@ public class GRPCService extends ServerCommunicationGrpc.ServerCommunicationImpl
         }
         rideOfferSnapshot.onCompleted();
     }
+
+    @Override
+    public void unassign(RideRequest request, StreamObserver<Point> responseObserver) {
+        zooKeeper.unassign(request.getId());
+        responseObserver.onCompleted();
+    }
 }

@@ -117,8 +117,8 @@ public class ZookeeperWatcher implements Watcher {
                 String timestamp = getZNodeData(path);
                 String megaPathToDelete = "/unassigned_" + timestamp;
                 String pathToDelete = megaPathToDelete + "/" + serverID;
-                String rideOfferDescription = getZNodeData(megaPathToDelete);
-                RideOfferEntity rideOfferEntity = new RideOfferEntity(rideOfferDescription);
+                Integer requestId = Integer.valueOf(getZNodeData(megaPathToDelete));
+                RideOfferEntity rideOfferEntity = rideOffers.get(requestId);
 
                 Integer rideID = rideOfferEntity.getOfferId();
                 Ride ride = rides.get(rideID);
@@ -128,7 +128,7 @@ public class ZookeeperWatcher implements Watcher {
                 rides.replace(rideID, ride, newRide);
 
                 RideOfferEntity newRideOffer = new RideOfferEntity(rideOfferEntity.toRideRequest());
-                rideOffers.replace(rideOfferEntity.getRequestId(), newRideOffer);
+                rideOffers.replace(requestId, rideOfferEntity, newRideOffer);
                 zkClient.delete(pathToDelete, -1);
                 clearNodes(megaPathToDelete);
 

@@ -57,7 +57,7 @@ public final class RouteGuideProto {
       " \001(\t\022\020\n\010lastName\030\003 \001(\t\022\r\n\005phone\030\004 \001(\t\022\021\n" +
       "\tsatisfied\030\005 \001(\010\"#\n\014RideSnapshot\022\023\n\013desc" +
       "ription\030\001 \001(\t\"(\n\021RideOfferSnapshot\022\023\n\013de" +
-      "scription\030\001 \001(\t2\346\002\n\023ServerCommunication\022" +
+      "scription\030\001 \001(\t2\262\003\n\023ServerCommunication\022" +
       "W\n\021hasCompatibleRide\022 .servercommunicati" +
       "on.RideRequest\032\036.servercommunication.Rid" +
       "eOffer\"\000\022N\n\noccupyRide\022\036.servercommunica" +
@@ -66,8 +66,10 @@ public final class RouteGuideProto {
       "on.Point\032!.servercommunication.RideSnaps" +
       "hot\"\0000\001\022W\n\rgetRideOffers\022\032.servercommuni" +
       "cation.Point\032&.servercommunication.RideO" +
-      "fferSnapshot\"\0000\001B$\n\tgeneratedB\017RouteGuid" +
-      "eProtoP\001\242\002\003RTGb\006proto3"
+      "fferSnapshot\"\0000\001\022J\n\010unassign\022 .servercom" +
+      "munication.RideRequest\032\032.servercommunica" +
+      "tion.Point\"\000B$\n\tgeneratedB\017RouteGuidePro" +
+      "toP\001\242\002\003RTGb\006proto3"
     };
     descriptor = com.google.protobuf.Descriptors.FileDescriptor
       .internalBuildGeneratedFileFrom(descriptorData,
