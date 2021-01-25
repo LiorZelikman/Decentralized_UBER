@@ -6,6 +6,7 @@ import generated.*;
 import io.grpc.Channel;
 import io.grpc.ManagedChannelBuilder;
 import io.grpc.stub.StreamObserver;
+import org.springframework.data.util.Pair;
 
 import java.awt.geom.Point2D;
 import java.net.ConnectException;
@@ -24,7 +25,7 @@ public class GRPCClient {
     public GRPCClient(){ }
 
 
-    public RideOffer hasCompatibleRide(RideRequest req){
+    public Pair<Integer, RideOffer> hasCompatibleRide(RideRequest req){
 
         for(Map.Entry<Point2D.Double, ArrayList<Integer>> entry : city_to_grpc_port.entrySet()){
             for(Integer port : entry.getValue()){
@@ -37,7 +38,7 @@ public class GRPCClient {
                     if (offer.getPhone().equals("")) {
                         break;
                     } else {
-                        return offer;
+                        return Pair.of(port, offer);
                     }
                 } catch(Exception e){ }
             }

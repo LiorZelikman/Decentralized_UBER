@@ -96,4 +96,5 @@ public class RideOfferEntity extends RideRequestEntity {
     public String toCustomString(){
         return "" + this.offerId + ";" + this.firstName + ";" + this.lastName + ";" + this.phone + ";" + this.satisfied + ";" + super.getCustomString();
     }
+
 }

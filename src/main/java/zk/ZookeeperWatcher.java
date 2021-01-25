@@ -2,6 +2,8 @@ package zk;
 
 import entities.Ride;
 import entities.RideOfferEntity;
+import entities.RideRequestEntity;
+import generated.RideRequest;
 import org.apache.zookeeper.*;
 import services.RidesService;
 
@@ -110,7 +112,29 @@ public class ZookeeperWatcher implements Watcher {
                 clearNodes(megaPathToDelete);
 
             } catch (KeeperException | InterruptedException e){}
-        } else {
+        } else if (path.equals("/unassign_operation")){
+            try {
+                String timestamp = getZNodeData(path);
+                String megaPathToDelete = "/unassigned_" + timestamp;
+                String pathToDelete = megaPathToDelete + "/" + serverID;
+                String rideOfferDescription = getZNodeData(megaPathToDelete);
+                RideOfferEntity rideOfferEntity = new RideOfferEntity(rideOfferDescription);
+
+                Integer rideID = rideOfferEntity.getOfferId();
+                Ride ride = rides.get(rideID);
+                Integer newVacancies = ride.getVacancies() + 1;
+                Ride newRide = new Ride(ride);
+                newRide.setVacancies(newVacancies);
+                rides.replace(rideID, ride, newRide);
+
+                RideOfferEntity newRideOffer = new RideOfferEntity(rideOfferEntity.toRideRequest());
+                rideOffers.replace(rideOfferEntity.getRequestId(), newRideOffer);
+                zkClient.delete(pathToDelete, -1);
+                clearNodes(megaPathToDelete);
+
+            } catch (KeeperException | InterruptedException e){}
+        }
+        else {
             System.out.println("How did you get here?");
         }
     }

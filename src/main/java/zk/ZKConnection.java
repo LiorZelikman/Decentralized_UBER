@@ -43,6 +43,7 @@ public class ZKConnection {
         try {
             zkClient.addWatch("/add_operation", watcher, AddWatchMode.PERSISTENT);
             zkClient.addWatch("/assign_operation", watcher, AddWatchMode.PERSISTENT);
+            zkClient.addWatch("/unassign_operation", watcher, AddWatchMode.PERSISTENT);
         } catch (KeeperException | InterruptedException e) {
             e.printStackTrace();
         }
@@ -106,4 +107,19 @@ public class ZKConnection {
             }
         }
     }
+
+    public void unassign(Integer port, RideOfferEntity offerEntity){
+        try{
+            long timestamp = System.currentTimeMillis();
+            createNode("/unassigned_" + timestamp, offerEntity.toCustomString());
+            for(int i = 0; i < RidesService.servers_per_city; i++){
+                createNode("/unassigned_" + timestamp + "/" + (i + 1), offerEntity.toCustomString());
+            }
+            zkClient.setData("/unassign_operation", String.valueOf(timestamp).getBytes(), -1);
+        }
+        catch (Exception e){
+            System.out.println(e.getMessage());
+        }
+    }
+
 }

@@ -122,7 +122,7 @@ public class RidesService{
     }
 
 
-    public RideOfferEntity requestRide(RideRequestEntity reqEntity) throws KeeperException, InterruptedException {
+    public Pair<Integer, RideOfferEntity> requestRide(RideRequestEntity reqEntity) throws KeeperException, InterruptedException {
         reqEntity.setRequestId(zooKeeper.supplyID());
         RideRequest req = reqEntity.toRideRequest();
         //rideOffers.put(reqEntity.getRequestId(), new RideOfferEntity(req));
@@ -133,23 +133,43 @@ public class RidesService{
 
                 //RideOffer offer = assignRide(rides, ride.getRide_id());
                 if(offer.isSatisfied()){
-                    return offer;
+                    return Pair.of(myGrpcPort, offer);
                 }
             }
         }
-        RideOffer grpcRideOffer = grpcClient.hasCompatibleRide(req);
+        Pair<Integer, RideOffer> grpcRideOffer = grpcClient.hasCompatibleRide(req);
         if(grpcRideOffer == null){
             zooKeeper.assign(-1, req);
-            return new RideOfferEntity(req);
+            return Pair.of(myGrpcPort, new RideOfferEntity(req));
         }
 
-        return new RideOfferEntity(grpcRideOffer, req);
+        return Pair.of(myGrpcPort, new RideOfferEntity(grpcRideOffer.getSecond(), req));
     }
 
 
-    public List<RideOfferEntity> planPath(PathRequest pathRequest){
-        List<RideOfferEntity> offers = new ArrayList<>();
-        return offers;
+    public List<RideOfferEntity> planPath(List<RideRequestEntity> pathRequest) throws KeeperException, InterruptedException {
+        List<Pair<Integer, RideOfferEntity>> offers = new ArrayList<>();
+        for(RideRequestEntity reqEntity : pathRequest){
+            if(requestRide(reqEntity).getSecond().isSatisfied()) {
+                offers.add(requestRide(reqEntity));
+            } else {
+                for (Pair<Integer, RideOfferEntity> offer: offers) {
+                    //call de-assign
+                    if(offer.getFirst().equals(myGrpcPort)){
+                        zooKeeper.unassign(offer.getFirst(), offer.getSecond());
+                    }
+                    else {
+
+                    }
+                }
+                return null;
+            }
+        }
+        List<RideOfferEntity> path = new ArrayList<>();
+        for(Pair<Integer, RideOfferEntity> pair : offers){
+            path.add(pair.getSecond());
+        }
+        return path;
     }
 
     public String test(){

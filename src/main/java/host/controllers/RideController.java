@@ -47,7 +47,7 @@ public class RideController implements ApplicationListener<ServletWebServerIniti
 
     @PostMapping(path  = "/rideRequest")
     RideOfferEntity requestRide(@RequestBody RideRequestEntity req) throws KeeperException, InterruptedException {
-        return service.requestRide(req);
+        return service.requestRide(req).getSecond();
     }
 
     @GetMapping(path = "/rides")
@@ -69,7 +69,7 @@ public class RideController implements ApplicationListener<ServletWebServerIniti
     Pair<ArrayList<Ride>, ArrayList<RideOfferEntity>> getSnapshot(){return service.getSnapshot();};
 
     @PostMapping(path = "/path/")
-    List<RideOfferEntity> pathPlanning(@RequestBody PathRequest pathRequest){ return service.planPath(pathRequest); }
+    List<RideOfferEntity> pathPlanning(@RequestBody List<RideRequestEntity> pathRequest) throws KeeperException, InterruptedException { return service.planPath(pathRequest); }
 
     @DeleteMapping(path = "/zk")
     boolean killZKServers(){
